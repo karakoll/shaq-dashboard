@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHAQ — Dashboard Colsam Industria</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #333; }
+    header { background: #1a1a2e; color: white; padding: 20px 32px; display: flex; align-items: center; gap: 16px; }
+    header h1 { font-size: 1.4rem; font-weight: 600; }
+    header span { font-size: 0.85rem; opacity: 0.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .kpi { background: white; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .kpi .numero { font-size: 2.2rem; font-weight: 700; }
+    .kpi .etichetta { font-size: 0.8rem; color: #888; margin-top: 4px; }
+    .kpi.verde .numero { color: #22c55e; }
+    .kpi.giallo .numero { color: #f59e0b; }
+    .kpi.rosso .numero { color: #ef4444; }
+    .kpi.blu .numero { color: #3b82f6; }
+    .sezione { background: white; border-radius: 10px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .sezione h2 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: #1a1a2e; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    th { text-align: left; padding: 10px 12px; background: #f8f9fa; color: #555; font-weight: 600; }
+    td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+    tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .badge.aperto { background: #dbeafe; color: #1d4ed8; }
+    .badge.in-corso { background: #fef3c7; color: #b45309; }
+    .badge.completato { background: #dcfce7; color: #15803d; }
+    .badge.in-ritardo { background: #fee2e2; color: #b91c1c; }
+    .badge.riprogrammato { background: #f3e8ff; color: #7e22ce; }
+    .loading { text-align: center; padding: 40px; color: #888; }
+    .aggiornamento { text-align: right; font-size: 0.75rem; color: #aaa; margin-top: -12px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>SHAQ — Dashboard Colsam Industria</h1>
+    <span id="dataOggi"></span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="aggiornamento" id="aggiornamento">Caricamento...</div>
+
+  <div class="kpi-row" id="kpiRow">
+    <div class="kpi blu"><div class="numero" id="kpiTotale">—</div><div class="etichetta">Impegni totali</div></div>
+    <div class="kpi giallo"><div class="numero" id="kpiAperti">—</div><div class="etichetta">Aperti</div></div>
+    <div class="kpi rosso"><div class="numero" id="kpiRitardo">—</div><div class="etichetta">In ritardo</div></div>
+    <div class="kpi verde"><div class="numero" id="kpiCompletati">—</div><div class="etichetta">Completati</div></div>
+    <div class="kpi blu"><div class="numero" id="kpiCamp">—</div><div class="etichetta">Campionature attive</div></div>
+  </div>
+
+  <div class="sezione">
+    <h2>Impegni</h2>
+    <div id="tabellaImpegni"><div class="loading">Caricamento...</div></div>
+  </div>
+
+  <div class="sezione">
+    <h2>Campionature</h2>
+    <div id="tabellaCampionature"><div class="loading">Caricamento...</div></div>
+  </div>
+
+  <div class="sezione">
+    <h2>Analisi comparative</h2>
+    <div id="tabellaAnalisi"><div class="loading">Caricamento...</div></div>
+  </div>
+
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://jloinnkluvhvnvhltzri.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_87-e2L0gPGrdVcCsmyZR-Q_tdAv8fU7';
+
+  async function fetchTabella(nome) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${nome}?select=*`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    return res.json();
+  }
+
+  function badge(stato) {
+    const cls = stato ? stato.toLowerCase().replace(' ', '-') : 'aperto';
+    return `<span class="badge ${cls}">${stato || '—'}</span>`;
+  }
+
+  function dataIT(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleDateString('it-IT');
+  }
+
+  async function carica() {
+    const [impegni, campionature, analisi] = await Promise.all([
+      fetchTabella('impegni'),
+      fetchTabella('campionature'),
+      fetchTabella('analisi_comparative')
+    ]);
+
+    // KPI
+    document.getElementById('kpiTotale').textContent = impegni.length;
+    document.getElementById('kpiAperti').textContent = impegni.filter(i => i.stato === 'Aperto' || i.stato === 'In corso').length;
+    document.getElementById('kpiRitardo').textContent = impegni.filter(i => i.stato === 'In ritardo').length;
+    document.getElementById('kpiCompletati').textContent = impegni.filter(i => i.stato === 'Completato').length;
+    document.getElementById('kpiCamp').textContent = campionature.filter(c => c.stato !== 'Completata').length;
+
+    // Tabella impegni
+    document.getElementById('tabellaImpegni').innerHTML = impegni.length === 0 ? '<div class="loading">Nessun impegno.</div>' : `
+      <table>
+        <thead><tr><th>Codice</th><th>Descrizione</th><th>Responsabile</th><th>Scadenza</th><th>Stato</th><th>Note</th></tr></thead>
+        <tbody>${impegni.map(i => `
+          <tr>
+            <td>${i.codice}</td>
+            <td>${i.descrizione}</td>
+            <td>${i.responsabile}</td>
+            <td>${dataIT(i.scadenza)}${i.scadenza_stimata ? ' *' : ''}</td>
+            <td>${badge(i.stato)}</td>
+            <td>${i.note || '—'}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+
+    // Tabella campionature
+    document.getElementById('tabellaCampionature').innerHTML = campionature.length === 0 ? '<div class="loading">Nessuna campionatura.</div>' : `
+      <table>
+        <thead><tr><th>Codice</th><th>Cliente</th><th>Prodotti</th><th>Tipo</th><th>Owner</th><th>Scadenza</th><th>Stato</th></tr></thead>
+        <tbody>${campionature.map(c => `
+          <tr>
+            <td>${c.codice}</td>
+            <td>${c.cliente || '—'}</td>
+            <td>${c.prodotti || '—'}</td>
+            <td>${c.tipo || '—'}</td>
+            <td>${c.owner || '—'}</td>
+            <td>${dataIT(c.scadenza)}</td>
+            <td>${badge(c.stato)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+
+    // Tabella analisi
+    document.getElementById('tabellaAnalisi').innerHTML = analisi.length === 0 ? '<div class="loading">Nessuna analisi comparativa.</div>' : `
+      <table>
+        <thead><tr><th>Codice</th><th>Prodotto concorrente</th><th>Produttore</th><th>Agente</th><th>Cliente</th><th>Stato</th></tr></thead>
+        <tbody>${analisi.map(a => `
+          <tr>
+            <td>${a.codice}</td>
+            <td>${a.prodotto_concorrente}</td>
+            <td>${a.produttore || '—'}</td>
+            <td>${a.agente_richiedente || '—'}</td>
+            <td>${a.cliente_coinvolto || '—'}</td>
+            <td>${badge(a.stato)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+
+    document.getElementById('aggiornamento').textContent = 'Aggiornato: ' + new Date().toLocaleTimeString('it-IT');
+  }
+
+  document.getElementById('dataOggi').textContent = new Date().toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  carica();
+  setInterval(carica, 60000);
+</script>
+
+</body>
+</html>
