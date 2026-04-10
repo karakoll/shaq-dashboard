@@ -763,9 +763,10 @@ function rowClass(item) {
 
 // ── TOOLTIP GLOBALE ────────────────────────────────────────
 var tt = document.getElementById('globalTooltip');
+var _tooltips = []; // array globale: evita problemi con apici nei testi
 
-function mostraTooltip(e, html) {
-  tt.innerHTML = html;
+function mostraTooltip(e, idx) {
+  tt.innerHTML = _tooltips[idx] || '';
   tt.style.display = 'block';
   posizionaTooltip(e);
 }
@@ -788,10 +789,17 @@ document.addEventListener('mousemove', function(e) {
 });
 
 function ttRow(label, val) {
+  var testo = (val !== null && val !== undefined && val !== '') ? String(val).replace(/</g, '&lt;') : '—';
   return '<div style="display:flex;gap:8px;margin-bottom:4px">' +
     '<span style="color:#636882;min-width:95px;flex-shrink:0;font-weight:600">' + label + '</span>' +
-    '<span style="color:#1a1d2e">' + (val || '—') + '</span>' +
+    '<span style="color:#1a1d2e">' + testo + '</span>' +
     '</div>';
+}
+
+// Registra un tooltip e restituisce l'indice
+function regTooltip(html) {
+  _tooltips.push(html);
+  return _tooltips.length - 1;
 }
 
 // ── TABS ───────────────────────────────────────────────────
@@ -894,16 +902,17 @@ function renderImpegni() {
 
   lista.forEach(function(i) {
     var rc = rowClass(i);
-    var tooltipHtml =
+    var tipHtml =
       ttRow('Codice', i.codice) +
       ttRow('Responsabile', i.responsabile) +
       ttRow('Scadenza', dataIT(i.scadenza) + (i.scadenza_stimata ? ' (stimata)' : '')) +
       ttRow('Stato', i.stato) +
       ttRow('Riunione', i.riunione_riferimento) +
       ttRow('Note', i.note);
+    var idx = regTooltip(tipHtml);
 
     html += '<tr class="' + rc + '"' +
-      ' onmouseenter="mostraTooltip(event, \'' + tooltipHtml.replace(/'/g, '&#39;') + '\')"' +
+      ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
       ' onmouseleave="nascondiTooltip()">' +
       '<td><span class="codice">' + (i.codice || '—') + '</span></td>' +
       '<td style="color:var(--text);font-weight:500">' + (i.descrizione || '—') + '</td>' +
@@ -965,7 +974,7 @@ function renderCampionature() {
 
   lista.forEach(function(c) {
     var rc = rowClass(c);
-    var tooltipHtml =
+    var tipHtml =
       ttRow('Codice', c.codice) +
       ttRow('Agente', c.agente) +
       ttRow('Cliente', c.cliente) +
@@ -978,9 +987,10 @@ function renderCampionature() {
       ttRow('Scadenza', dataIT(c.scadenza)) +
       ttRow('Stato', c.stato) +
       ttRow('Note', c.note);
+    var idx = regTooltip(tipHtml);
 
     html += '<tr class="' + rc + '"' +
-      ' onmouseenter="mostraTooltip(event, \'' + tooltipHtml.replace(/'/g, '&#39;') + '\')"' +
+      ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
       ' onmouseleave="nascondiTooltip()">' +
       '<td><span class="codice">' + (c.codice || '—') + '</span></td>' +
       '<td style="color:var(--text);font-weight:500">' + (c.cliente || '—') + '</td>' +
@@ -1044,9 +1054,10 @@ function renderAnalisi() {
       ttRow('Apertura', dataIT(a.data_apertura)) +
       ttRow('Chiusura', dataIT(a.data_chiusura)) +
       ttRow('Nota tecnica', a.nota_tecnica);
+    var idx = regTooltip(tooltipHtml);
 
     html += '<tr' +
-      ' onmouseenter="mostraTooltip(event, \'' + tooltipHtml.replace(/'/g, '&#39;') + '\')"' +
+      ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
       ' onmouseleave="nascondiTooltip()">' +
       '<td><span class="codice">' + (a.codice || '—') + '</span></td>' +
       '<td style="color:var(--text);font-weight:500">' + (a.prodotto_concorrente || '—') + '</td>' +
@@ -1077,6 +1088,7 @@ async function carica() {
   _impegni      = risultati[0];
   _campionature = risultati[1];
   _analisi      = risultati[2];
+  _tooltips     = []; // reset ad ogni caricamento
 
   // ── KPI ──
   document.getElementById('kpiTotale').textContent = _impegni.length;
@@ -1377,4 +1389,3 @@ setInterval(carica, 60000);
 </script>
 </body>
 </html>
-
