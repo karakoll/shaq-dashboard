@@ -371,6 +371,136 @@ tr.row-urgente:hover td { background: #fef3c7; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
+/* ── BANNER IN ATTESA CLASSIFICAZIONE ── */
+.banner-attesa {
+  background: #fefce8;
+  border: 1px solid #fde047;
+  border-left: 4px solid #d97706;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.banner-attesa-testo {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #78350f;
+}
+.banner-attesa-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #d97706;
+  background: #fef3c7;
+  border: 1px solid #fde047;
+  padding: 2px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.banner-attesa-link {
+  font-size: 0.78rem;
+  color: #d97706;
+  cursor: pointer;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+.banner-attesa-link:hover { color: #92400e; }
+
+/* ── AUDIT CHAIN ── */
+.audit-table table { font-size: 0.81rem; }
+.audit-chain {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.audit-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.audit-step-label {
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+.audit-step-value {
+  font-size: 0.78rem;
+  color: var(--text2);
+  font-weight: 500;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+.audit-step-value.pending {
+  color: var(--orange);
+  background: #fef3c7;
+  border-color: #fde047;
+}
+.audit-arrow {
+  color: var(--border2);
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+.audit-note {
+  font-size: 0.76rem;
+  color: var(--muted);
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── SUB-TABS (dentro Campionature) ── */
+.sub-tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sub-tab {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+  background: none;
+  border-left: none; border-right: none; border-top: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.sub-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.sub-tab:hover:not(.active) { color: var(--text); }
+.sub-tab-content { display: none; }
+.sub-tab-content.active { display: block; }
+
+/* ── ETICHETTA RUOLO ── */
+.role-label {
+  display: block;
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-bottom: 1px;
+}
+.role-value {
+  font-size: 0.82rem;
+  color: var(--text2);
+  font-weight: 500;
+}
+.role-value.pending { color: var(--orange); font-style: italic; }
+
 /* ── EMPTY / FOOTER ── */
 .empty { text-align: center; padding: 36px; color: var(--muted); font-size: 0.85rem; }
 .ultimo-agg {
@@ -506,6 +636,13 @@ tr.row-urgente:hover td { background: #fef3c7; }
         <select id="filtroRespImp" onchange="renderImpegni()">
           <option value="">Tutti i responsabili</option>
         </select>
+        <select id="filtroPeriodoImp" onchange="renderImpegni()">
+          <option value="">Qualsiasi scadenza</option>
+          <option value="scaduti">Già scaduti</option>
+          <option value="7">Prossimi 7 giorni</option>
+          <option value="30">Prossimi 30 giorni</option>
+          <option value="90">Prossimi 90 giorni</option>
+        </select>
         <button class="btn-reset" onclick="resetFiltriImpegni()">× Reset</button>
       </div>
       <div class="table-wrap">
@@ -519,6 +656,20 @@ tr.row-urgente:hover td { background: #fef3c7; }
        TAB CAMPIONATURE
   ════════════════════════════════════════════════════ -->
   <div class="tab-content" id="tab-campionature">
+
+    <!-- Banner In attesa classificazione -->
+    <div id="bannerAttesa" class="banner-attesa" style="display:none">
+      <div>
+        <div class="banner-attesa-testo">⚠ Campionature in attesa di classificazione da Piero</div>
+        <div style="font-size:0.76rem;color:#92400e;margin-top:2px">
+          Non è stato ancora definito tipo, owner e scadenza
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="banner-attesa-count" id="bannerAttesaCount">0</span>
+        <span class="banner-attesa-link" onclick="filtraAttesa()">Mostra solo queste →</span>
+      </div>
+    </div>
 
     <div class="grid-2" style="margin-bottom:16px">
       <div class="card" style="margin-bottom:0">
@@ -544,29 +695,69 @@ tr.row-urgente:hover td { background: #fef3c7; }
         <div class="card-title">Campionature</div>
         <div class="card-count" id="countCamp">—</div>
       </div>
-      <div class="filtri-row" style="margin-bottom:14px">
-        <input type="text" id="cercaCamp" placeholder="Cerca cliente o prodotto…" oninput="renderCampionature()">
-        <select id="filtroStatoCamp" onchange="renderCampionature()">
-          <option value="">Tutti gli stati</option>
-          <option>In attesa classificazione</option>
-          <option>In corso</option>
-          <option>Completata</option>
-          <option>In ritardo</option>
-        </select>
-        <select id="filtroTipoCamp" onchange="renderCampionature()">
-          <option value="">Tutti i tipi</option>
-          <option value="commessa_colore">Commessa colore</option>
-          <option value="commessa_prodotto">Commessa prodotto</option>
-          <option value="progetto">Progetto</option>
-        </select>
-        <select id="filtroOwnerCamp" onchange="renderCampionature()">
-          <option value="">Tutti gli owner</option>
-        </select>
-        <button class="btn-reset" onclick="resetFiltriCamp()">× Reset</button>
+
+      <!-- Sub-tab: Lista | Audit -->
+      <div class="sub-tabs">
+        <button class="sub-tab active" onclick="switchSubTab('lista', this)">Lista</button>
+        <button class="sub-tab" onclick="switchSubTab('audit', this)">Audit flusso</button>
       </div>
-      <div class="table-wrap">
-        <div id="tabellaCampionature"><div class="empty">Caricamento...</div></div>
+
+      <!-- SUB-TAB: Lista -->
+      <div class="sub-tab-content active" id="sub-lista">
+        <div class="filtri-row" style="margin-bottom:14px">
+          <input type="text" id="cercaCamp" placeholder="Cerca cliente o prodotto…" oninput="renderCampionature()">
+          <select id="filtroStatoCamp" onchange="renderCampionature()">
+            <option value="">Tutti gli stati</option>
+            <option>In attesa classificazione</option>
+            <option>In corso</option>
+            <option>Completata</option>
+            <option>In ritardo</option>
+          </select>
+          <select id="filtroTipoCamp" onchange="renderCampionature()">
+            <option value="">Tutti i tipi</option>
+            <option value="commessa_colore">Commessa colore</option>
+            <option value="commessa_prodotto">Commessa prodotto</option>
+            <option value="progetto">Progetto</option>
+          </select>
+          <select id="filtroOwnerCamp" onchange="renderCampionature()">
+            <option value="">Tutti gli owner</option>
+          </select>
+          <select id="filtroClassificatoreCamp" onchange="renderCampionature()">
+            <option value="">Tutti i classificatori</option>
+          </select>
+          <select id="filtroPeriodoCamp" onchange="renderCampionature()">
+            <option value="">Qualsiasi periodo</option>
+            <option value="7">Ultimi 7 giorni</option>
+            <option value="30">Ultimi 30 giorni</option>
+            <option value="90">Ultimi 90 giorni</option>
+          </select>
+          <button class="btn-reset" onclick="resetFiltriCamp()">× Reset</button>
+        </div>
+        <div class="table-wrap">
+          <div id="tabellaCampionature"><div class="empty">Caricamento...</div></div>
+        </div>
       </div>
+
+      <!-- SUB-TAB: Audit flusso -->
+      <div class="sub-tab-content audit-table" id="sub-audit">
+        <div class="filtri-row" style="margin-bottom:14px">
+          <select id="filtroStatoAudit" onchange="renderAudit()">
+            <option value="">Tutti gli stati</option>
+            <option>In attesa classificazione</option>
+            <option>In corso</option>
+            <option>Completata</option>
+            <option>In ritardo</option>
+          </select>
+          <select id="filtroOwnerAudit" onchange="renderAudit()">
+            <option value="">Tutti gli owner</option>
+          </select>
+          <button class="btn-reset" onclick="resetFiltriAudit()">× Reset</button>
+        </div>
+        <div class="table-wrap">
+          <div id="tabellaAudit"><div class="empty">Caricamento...</div></div>
+        </div>
+      </div>
+
     </div>
 
   </div><!-- /tab-campionature -->
@@ -814,6 +1005,27 @@ function switchTab(nome, el) {
   document.getElementById('tab-' + nome).classList.add('active');
 }
 
+// Sub-tabs dentro Campionature
+function switchSubTab(nome, el) {
+  document.querySelectorAll('.sub-tab').forEach(function(t) {
+    t.classList.remove('active');
+  });
+  document.querySelectorAll('.sub-tab-content').forEach(function(t) {
+    t.classList.remove('active');
+  });
+  el.classList.add('active');
+  document.getElementById('sub-' + nome).classList.add('active');
+}
+
+// Scorciatoia banner: filtra solo In attesa classificazione
+function filtraAttesa() {
+  document.getElementById('filtroStatoCamp').value = 'In attesa classificazione';
+  // Assicura che il sub-tab Lista sia attivo
+  var subTabLista = document.querySelector('.sub-tab');
+  if (subTabLista) switchSubTab('lista', subTabLista);
+  renderCampionature();
+}
+
 // ── SORT ───────────────────────────────────────────────────
 function sortBy(arr, col, dir) {
   return arr.slice().sort(function(a, b) {
@@ -869,9 +1081,13 @@ function popolaSelect(selectId, valori) {
 
 // ── RENDER IMPEGNI ─────────────────────────────────────────
 function renderImpegni() {
-  var cerca      = document.getElementById('cercaImpegni').value.toLowerCase();
-  var filtroStato = document.getElementById('filtroStatoImp').value;
-  var filtroResp  = document.getElementById('filtroRespImp').value;
+  var cerca        = document.getElementById('cercaImpegni').value.toLowerCase();
+  var filtroStato  = document.getElementById('filtroStatoImp').value;
+  var filtroResp   = document.getElementById('filtroRespImp').value;
+  var filtroPeriodo = document.getElementById('filtroPeriodoImp').value;
+
+  var oggi = new Date();
+  oggi.setHours(0, 0, 0, 0);
 
   var lista = _impegni.filter(function(i) {
     var matchCerca = !cerca ||
@@ -879,7 +1095,23 @@ function renderImpegni() {
       (i.codice || '').toLowerCase().indexOf(cerca) !== -1;
     var matchStato = !filtroStato || i.stato === filtroStato;
     var matchResp  = !filtroResp  || i.responsabile === filtroResp;
-    return matchCerca && matchStato && matchResp;
+
+    var matchPeriodo = true;
+    if (filtroPeriodo && i.scadenza) {
+      var scad = new Date(i.scadenza);
+      scad.setHours(0, 0, 0, 0);
+      var gg = Math.round((scad - oggi) / 86400000);
+      if (filtroPeriodo === 'scaduti') {
+        matchPeriodo = gg < 0;
+      } else {
+        var giorni = parseInt(filtroPeriodo, 10);
+        matchPeriodo = gg >= 0 && gg <= giorni;
+      }
+    } else if (filtroPeriodo) {
+      matchPeriodo = false; // nessuna scadenza impostata
+    }
+
+    return matchCerca && matchStato && matchResp && matchPeriodo;
   });
 
   if (sortImp.col) lista = sortBy(lista, sortImp.col, sortImp.dir);
@@ -931,26 +1163,44 @@ function resetFiltriImpegni() {
   document.getElementById('cercaImpegni').value = '';
   document.getElementById('filtroStatoImp').value = '';
   document.getElementById('filtroRespImp').value = '';
+  document.getElementById('filtroPeriodoImp').value = '';
   sortImp = { col: null, dir: 1 };
   renderImpegni();
 }
 
 // ── RENDER CAMPIONATURE ────────────────────────────────────
 function renderCampionature() {
-  var cerca       = document.getElementById('cercaCamp').value.toLowerCase();
-  var filtroStato = document.getElementById('filtroStatoCamp').value;
-  var filtroTipo  = document.getElementById('filtroTipoCamp').value;
-  var filtroOwner = document.getElementById('filtroOwnerCamp').value;
+  var cerca              = document.getElementById('cercaCamp').value.toLowerCase();
+  var filtroStato        = document.getElementById('filtroStatoCamp').value;
+  var filtroTipo         = document.getElementById('filtroTipoCamp').value;
+  var filtroOwner        = document.getElementById('filtroOwnerCamp').value;
+  var filtroClassif      = document.getElementById('filtroClassificatoreCamp').value;
+  var filtroPeriodo      = document.getElementById('filtroPeriodoCamp').value;
+
+  var oggi = new Date();
+  oggi.setHours(0, 0, 0, 0);
 
   var lista = _campionature.filter(function(c) {
     var matchCerca = !cerca ||
       (c.cliente  || '').toLowerCase().indexOf(cerca) !== -1 ||
       (c.prodotti || '').toLowerCase().indexOf(cerca) !== -1 ||
       (c.codice   || '').toLowerCase().indexOf(cerca) !== -1;
-    var matchStato = !filtroStato || c.stato === filtroStato;
-    var matchTipo  = !filtroTipo  || c.tipo  === filtroTipo;
-    var matchOwner = !filtroOwner || c.owner === filtroOwner;
-    return matchCerca && matchStato && matchTipo && matchOwner;
+    var matchStato   = !filtroStato   || c.stato === filtroStato;
+    var matchTipo    = !filtroTipo    || c.tipo  === filtroTipo;
+    var matchOwner   = !filtroOwner   || c.owner === filtroOwner;
+    var matchClassif = !filtroClassif || (c.classificato_da_nome || '') === filtroClassif;
+
+    var matchPeriodo = true;
+    if (filtroPeriodo && c.data_richiesta) {
+      var dataRich = new Date(c.data_richiesta);
+      dataRich.setHours(0, 0, 0, 0);
+      var gg = Math.round((oggi - dataRich) / 86400000);
+      matchPeriodo = gg >= 0 && gg <= parseInt(filtroPeriodo, 10);
+    } else if (filtroPeriodo) {
+      matchPeriodo = false;
+    }
+
+    return matchCerca && matchStato && matchTipo && matchOwner && matchClassif && matchPeriodo;
   });
 
   if (sortCamp.col) lista = sortBy(lista, sortCamp.col, sortCamp.dir);
@@ -964,9 +1214,13 @@ function renderCampionature() {
 
   var html = '<table><thead><tr>' +
     '<th class="sortable" onclick="toggleSortCamp(\'codice\', this)">Codice</th>' +
+    '<th class="sortable" onclick="toggleSortCamp(\'data_richiesta\', this)">Data rich.</th>' +
+    '<th class="sortable" onclick="toggleSortCamp(\'agente\', this)">Agente</th>' +
     '<th class="sortable" onclick="toggleSortCamp(\'cliente\', this)">Cliente</th>' +
     '<th>Prodotti</th>' +
     '<th class="sortable" onclick="toggleSortCamp(\'tipo\', this)">Tipo</th>' +
+    '<th>Classificato da</th>' +
+    '<th>Data classif.</th>' +
     '<th class="sortable" onclick="toggleSortCamp(\'owner\', this)">Owner</th>' +
     '<th class="sortable" onclick="toggleSortCamp(\'scadenza\', this)">Scadenza</th>' +
     '<th class="sortable" onclick="toggleSortCamp(\'stato\', this)">Stato</th>' +
@@ -974,8 +1228,25 @@ function renderCampionature() {
 
   lista.forEach(function(c) {
     var rc = rowClass(c);
+
+    // Classificato da: legge il campo DB classificato_da_nome
+    var classificatoDa = c.classificato_da_nome
+      ? '<span class="role-value">' + c.classificato_da_nome + '</span>'
+      : '<span class="role-value pending">In attesa</span>';
+
+    // Data classificazione: legge il campo DB data_classificazione
+    var dataClassif = c.data_classificazione
+      ? '<span style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_classificazione) + '</span>'
+      : '<span style="color:var(--muted);font-size:0.78rem">—</span>';
+
+    // Owner
+    var ownerCell = c.owner
+      ? '<span class="role-value">' + c.owner + '</span>'
+      : '<span class="role-value pending">—</span>';
+
     var tipHtml =
       ttRow('Codice', c.codice) +
+      ttRow('Data richiesta', dataIT(c.data_richiesta)) +
       ttRow('Agente', c.agente) +
       ttRow('Cliente', c.cliente) +
       ttRow('Prodotti', c.prodotti) +
@@ -983,6 +1254,8 @@ function renderCampionature() {
       ttRow('Fatturato att.', c.fatturato_atteso ? '€' + Number(c.fatturato_atteso).toLocaleString('it-IT') : null) +
       ttRow('Marca', c.marca) +
       ttRow('Tipo', c.tipo) +
+      ttRow('Classificato da', c.classificato_da_nome || 'Non ancora classificata') +
+      ttRow('Data classif.', dataIT(c.data_classificazione)) +
       ttRow('Owner', c.owner) +
       ttRow('Scadenza', dataIT(c.scadenza)) +
       ttRow('Stato', c.stato) +
@@ -993,10 +1266,14 @@ function renderCampionature() {
       ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
       ' onmouseleave="nascondiTooltip()">' +
       '<td><span class="codice">' + (c.codice || '—') + '</span></td>' +
+      '<td style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_richiesta) + '</td>' +
+      '<td style="font-size:0.82rem">' + (c.agente || '—') + '</td>' +
       '<td style="color:var(--text);font-weight:500">' + (c.cliente || '—') + '</td>' +
-      '<td style="font-size:0.78rem;max-width:180px">' + (c.prodotti || '—') + '</td>' +
+      '<td style="font-size:0.78rem;max-width:160px">' + (c.prodotti || '—') + '</td>' +
       '<td style="font-size:0.76rem;color:var(--muted)">' + (c.tipo ? c.tipo.replace(/_/g, ' ') : '—') + '</td>' +
-      '<td>' + (c.owner || '—') + '</td>' +
+      '<td>' + classificatoDa + '</td>' +
+      '<td>' + dataClassif + '</td>' +
+      '<td>' + ownerCell + '</td>' +
       '<td>' + scadenzaChip(c.scadenza, false) + '</td>' +
       '<td>' + badge(c.stato) + '</td>' +
       '</tr>';
@@ -1011,8 +1288,122 @@ function resetFiltriCamp() {
   document.getElementById('filtroStatoCamp').value = '';
   document.getElementById('filtroTipoCamp').value = '';
   document.getElementById('filtroOwnerCamp').value = '';
+  document.getElementById('filtroClassificatoreCamp').value = '';
+  document.getElementById('filtroPeriodoCamp').value = '';
   sortCamp = { col: null, dir: 1 };
   renderCampionature();
+}
+
+// ── RENDER AUDIT ───────────────────────────────────────────
+// Mostra per ogni campionatura la catena: chi ha mandato → chi ha classificato → chi esegue
+function renderAudit() {
+  var filtroStato = document.getElementById('filtroStatoAudit').value;
+  var filtroOwner = document.getElementById('filtroOwnerAudit').value;
+
+  var lista = _campionature.filter(function(c) {
+    var matchStato = !filtroStato || c.stato === filtroStato;
+    var matchOwner = !filtroOwner || c.owner === filtroOwner;
+    return matchStato && matchOwner;
+  });
+
+  // Ordina: prima In attesa classificazione, poi In ritardo, poi resto
+  lista.sort(function(a, b) {
+    var ordine = {
+      'In attesa classificazione': 0,
+      'In ritardo': 1,
+      'In corso': 2,
+      'Completata': 3
+    };
+    var oa = ordine[a.stato] !== undefined ? ordine[a.stato] : 4;
+    var ob = ordine[b.stato] !== undefined ? ordine[b.stato] : 4;
+    return oa - ob;
+  });
+
+  if (lista.length === 0) {
+    document.getElementById('tabellaAudit').innerHTML = '<div class="empty">Nessun risultato</div>';
+    return;
+  }
+
+  var html = '<table><thead><tr>' +
+    '<th>Codice</th>' +
+    '<th>Data rich.</th>' +
+    '<th>Inviato da</th>' +
+    '<th>Classificato da</th>' +
+    '<th>Data classif.</th>' +
+    '<th>Owner</th>' +
+    '<th>Tipo</th>' +
+    '<th>Scadenza</th>' +
+    '<th>Stato</th>' +
+    '<th>Ultimo aggiorn.</th>' +
+    '</tr></thead><tbody>';
+
+  lista.forEach(function(c) {
+    var rc = rowClass(c);
+
+    // Classificato da: legge classificato_da_nome dal DB
+    var classNome = c.classificato_da_nome || null;
+    var classVal = classNome
+      ? '<span class="role-value">' + classNome + '</span>'
+      : '<span class="role-value pending">⏳ In attesa</span>';
+
+    // Data classificazione dal DB
+    var dataClassifCell = c.data_classificazione
+      ? '<span style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_classificazione) + '</span>'
+      : '<span style="color:var(--muted);font-size:0.78rem">—</span>';
+
+    // Owner
+    var ownerVal = c.owner
+      ? '<span class="role-value">' + c.owner + '</span>'
+      : '<span class="role-value pending">—</span>';
+
+    // Ultimo aggiornamento significativo
+    var ultimoAgg = c.data_ultimo_aggiornamento
+      ? dataIT(c.data_ultimo_aggiornamento)
+      : '—';
+
+    var tipHtml =
+      ttRow('Codice', c.codice) +
+      ttRow('Data richiesta', dataIT(c.data_richiesta)) +
+      ttRow('Agente', c.agente) +
+      ttRow('Cliente', c.cliente) +
+      ttRow('Prodotti', c.prodotti) +
+      ttRow('Classificato da', classNome || 'Non ancora classificata') +
+      ttRow('Data classif.', dataIT(c.data_classificazione)) +
+      ttRow('Owner', c.owner) +
+      ttRow('Tipo', c.tipo) +
+      ttRow('Scadenza', dataIT(c.scadenza)) +
+      ttRow('Stato', c.stato) +
+      ttRow('Ultimo aggiorn.', ultimoAgg) +
+      ttRow('Note', c.note);
+    var idx = regTooltip(tipHtml);
+
+    html += '<tr class="' + rc + '"' +
+      ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
+      ' onmouseleave="nascondiTooltip()">' +
+      '<td><span class="codice">' + (c.codice || '—') + '</span></td>' +
+      '<td style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_richiesta) + '</td>' +
+      '<td>' +
+        '<span class="role-label">Agente</span>' +
+        '<span class="role-value">' + (c.agente || '—') + '</span>' +
+      '</td>' +
+      '<td>' + classVal + '</td>' +
+      '<td>' + dataClassifCell + '</td>' +
+      '<td>' + ownerVal + '</td>' +
+      '<td style="font-size:0.76rem;color:var(--muted)">' + (c.tipo ? c.tipo.replace(/_/g, ' ') : '—') + '</td>' +
+      '<td>' + scadenzaChip(c.scadenza, false) + '</td>' +
+      '<td>' + badge(c.stato) + '</td>' +
+      '<td style="font-size:0.78rem;color:var(--muted);white-space:nowrap">' + ultimoAgg + '</td>' +
+      '</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('tabellaAudit').innerHTML = html;
+}
+
+function resetFiltriAudit() {
+  document.getElementById('filtroStatoAudit').value = '';
+  document.getElementById('filtroOwnerAudit').value = '';
+  renderAudit();
 }
 
 // ── RENDER ANALISI ─────────────────────────────────────────
@@ -1116,7 +1507,7 @@ async function carica() {
     ? (totaleFatturato / 1000).toFixed(0) + 'k'
     : totaleFatturato.toFixed(0);
 
-  // ── POPOLA SELECT RESPONSABILI ──
+  // ── POPOLA SELECT RESPONSABILI IMPEGNI ──
   var responsabili = [];
   _impegni.forEach(function(i) {
     if (i.responsabile && responsabili.indexOf(i.responsabile) === -1) {
@@ -1133,11 +1524,35 @@ async function carica() {
     }
   });
   popolaSelect('filtroOwnerCamp', owners);
+  popolaSelect('filtroOwnerAudit', owners);
+
+  // ── POPOLA SELECT CLASSIFICATORI ──
+  var classificatori = [];
+  _campionature.forEach(function(c) {
+    if (c.classificato_da_nome && classificatori.indexOf(c.classificato_da_nome) === -1) {
+      classificatori.push(c.classificato_da_nome);
+    }
+  });
+  popolaSelect('filtroClassificatoreCamp', classificatori);
+
+  // ── BANNER IN ATTESA CLASSIFICAZIONE ──
+  var attesa = _campionature.filter(function(c) {
+    return c.stato === 'In attesa classificazione';
+  });
+  var banner = document.getElementById('bannerAttesa');
+  var bannerCount = document.getElementById('bannerAttesaCount');
+  if (attesa.length > 0) {
+    banner.style.display = 'flex';
+    bannerCount.textContent = attesa.length;
+  } else {
+    banner.style.display = 'none';
+  }
 
   // ── RENDER TABELLE ──
   renderImpegni();
   renderCampionature();
   renderAnalisi();
+  renderAudit();
 
   // ── GRAFICO: Stato impegni (ciambella) ──
   var statiCount = {
