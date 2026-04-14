@@ -533,45 +533,7 @@ tr.row-urgente:hover td { background: #fef3c7; }
 </style>
 </head>
 <body>
-<!-- SHAQ AUTH -->
-<div id="authWall" style="
-  position:fixed; inset:0; background:#0e0f14;
-  display:flex; align-items:center; justify-content:center;
-  z-index:9999; flex-direction:column; gap:16px;">
-  <div style="font-family:monospace; font-size:1.2rem; color:#e8c547; font-weight:bold;">SHAQ</div>
-  <div style="font-size:0.85rem; color:#6b7080;">Accesso riservato — Colsam Industria</div>
-  <input id="authInput" type="password" placeholder="Password"
-    style="padding:10px 16px; border-radius:6px; border:1px solid #2a2d38;
-    background:#16181f; color:#e8eaf0; font-size:0.9rem; width:220px; outline:none;"
-    onkeydown="if(event.key==='Enter') checkAuth()">
-  <button onclick="checkAuth()"
-    style="padding:8px 24px; background:#e8c547; color:#000; border:none;
-    border-radius:6px; font-weight:bold; cursor:pointer; font-size:0.9rem;">
-    Accedi
-  </button>
-  <div id="authError" style="color:#f75555; font-size:0.8rem; display:none;">
-    Password non corretta
-  </div>
-</div>
-<script>
-  // Cambia questa password con una a tua scelta
-  var SHAQ_PWD = 'Colsam0426';
-  function checkAuth() {
-    var input = document.getElementById('authInput').value;
-    if (input === SHAQ_PWD) {
-      document.getElementById('authWall').style.display = 'none';
-      sessionStorage.setItem('shaq_auth', '1');
-    } else {
-      document.getElementById('authError').style.display = 'block';
-      document.getElementById('authInput').value = '';
-    }
-  }
-  // Se già autenticato in questa sessione, non mostrare il wall
-  if (sessionStorage.getItem('shaq_auth') === '1') {
-    document.getElementById('authWall').style.display = 'none';
-  }
-</script>
-<!-- END SHAQ AUTH -->  
+
 <header>
   <div class="logo">
     <div class="logo-badge">SHAQ</div>
@@ -957,12 +919,17 @@ function giorniAllaScadenza(dataStr) {
 }
 
 // Chip scadenza con indicatore visivo urgenza
-function scadenzaChip(dataStr, stimata) {
+function scadenzaChip(dataStr, stimata, stato) {
   if (!dataStr) return '—';
-  var gg = giorniAllaScadenza(dataStr);
   var testo = dataIT(dataStr);
   var stimataTesto = stimata ? ' <span class="stim">(~)</span>' : '';
 
+  // Completato: data in verde, nessun allarme
+  if (stato === 'Completato' || stato === 'Completata') {
+    return '<span style="color:var(--green);font-weight:600;font-size:0.82rem">' + testo + stimataTesto + '</span>';
+  }
+
+  var gg = giorniAllaScadenza(dataStr);
   if (gg === null) return testo + stimataTesto;
 
   if (gg < 0) {
@@ -1187,7 +1154,7 @@ function renderImpegni() {
       '<td><span class="codice">' + (i.codice || '—') + '</span></td>' +
       '<td style="color:var(--text);font-weight:500">' + (i.descrizione || '—') + '</td>' +
       '<td>' + (i.responsabile || '—') + '</td>' +
-      '<td>' + scadenzaChip(i.scadenza, i.scadenza_stimata) + '</td>' +
+      '<td>' + scadenzaChip(i.scadenza, i.scadenza_stimata, i.stato) + '</td>' +
       '<td>' + badge(i.stato) + '</td>' +
       '<td style="color:var(--muted);font-size:0.78rem;max-width:220px">' + (i.note || '—') + '</td>' +
       '</tr>';
@@ -1312,7 +1279,7 @@ function renderCampionature() {
       '<td>' + classificatoDa + '</td>' +
       '<td>' + dataClassif + '</td>' +
       '<td>' + ownerCell + '</td>' +
-      '<td>' + scadenzaChip(c.scadenza, false) + '</td>' +
+      '<td>' + scadenzaChip(c.scadenza, false, c.stato) + '</td>' +
       '<td>' + badge(c.stato) + '</td>' +
       '</tr>';
   });
@@ -1428,7 +1395,7 @@ function renderAudit() {
       '<td>' + dataClassifCell + '</td>' +
       '<td>' + ownerVal + '</td>' +
       '<td style="font-size:0.76rem;color:var(--muted)">' + (c.tipo ? c.tipo.replace(/_/g, ' ') : '—') + '</td>' +
-      '<td>' + scadenzaChip(c.scadenza, false) + '</td>' +
+      '<td>' + scadenzaChip(c.scadenza, false, c.stato) + '</td>' +
       '<td>' + badge(c.stato) + '</td>' +
       '<td style="font-size:0.78rem;color:var(--muted);white-space:nowrap">' + ultimoAgg + '</td>' +
       '</tr>';
