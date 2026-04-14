@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -6,7 +7,11 @@
 <title>SHAQ — Dashboard Colsam Industria</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
 <style>
+/* ═══════════════════════════════════════════════════════════
+   VARIABILI GLOBALI
+═══════════════════════════════════════════════════════════ */
 :root {
   --bg:       #eef0f4;
   --surface:  #ffffff;
@@ -28,7 +33,11 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* ── HEADER ── */
+@keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════════════════ */
 header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -63,34 +72,19 @@ header {
   padding: 5px 12px;
   border-radius: 20px;
 }
-.live-dot {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.75rem;
-  color: var(--green);
-  font-weight: 600;
-}
-.live-dot::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  background: var(--green);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+.live-dot { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--green); font-weight: 600; }
+.live-dot::before { content: ''; width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
 
-/* ── LAYOUT ── */
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════════ */
 .container { max-width: 1300px; margin: 0 auto; padding: 24px 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 
-/* ── KPI ── */
-.kpi-row {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-}
+/* ═══════════════════════════════════════════════════════════
+   KPI
+═══════════════════════════════════════════════════════════ */
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
 .kpi {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -100,41 +94,25 @@ header {
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-.kpi::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-}
+.kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
 .kpi.blu::before    { background: var(--blue); }
 .kpi.verde::before  { background: var(--green); }
 .kpi.rosso::before  { background: var(--red); }
 .kpi.giallo::before { background: var(--orange); }
 .kpi.viola::before  { background: var(--purple); }
 .kpi.teal::before   { background: var(--teal); }
-.kpi .numero {
-  font-family: 'DM Mono', monospace;
-  font-size: 2.2rem;
-  font-weight: 500;
-  line-height: 1;
-  margin-bottom: 7px;
-}
+.kpi .numero { font-family: 'DM Mono', monospace; font-size: 2.2rem; font-weight: 500; line-height: 1; margin-bottom: 7px; }
 .kpi.blu    .numero { color: var(--blue); }
 .kpi.verde  .numero { color: var(--green); }
 .kpi.rosso  .numero { color: var(--red); }
 .kpi.giallo .numero { color: var(--orange); }
 .kpi.viola  .numero { color: var(--purple); }
 .kpi.teal   .numero { color: var(--teal); }
-.kpi .etichetta {
-  font-size: 0.72rem;
-  color: var(--muted);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
+.kpi .etichetta { font-size: 0.72rem; color: var(--muted); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
 
-/* ── GRID & CARDS ── */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+/* ═══════════════════════════════════════════════════════════
+   CARD
+═══════════════════════════════════════════════════════════ */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -153,13 +131,7 @@ header {
   flex-wrap: wrap;
   gap: 8px;
 }
-.card-title {
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: var(--text2);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
+.card-title { font-size: 0.74rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.1em; }
 .card-count {
   font-family: 'DM Mono', monospace;
   font-size: 0.74rem;
@@ -170,14 +142,12 @@ header {
   border-radius: 10px;
   font-weight: 500;
 }
+.card-actions { display: flex; align-items: center; gap: 8px; }
 
-/* ── FILTRI ── */
-.filtri-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
+/* ═══════════════════════════════════════════════════════════
+   FILTRI
+═══════════════════════════════════════════════════════════ */
+.filtri-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .filtri-row input[type="text"],
 .filtri-row select {
   background: var(--surface2);
@@ -192,10 +162,7 @@ header {
 }
 .filtri-row input[type="text"]::placeholder { color: var(--muted); }
 .filtri-row input[type="text"]:focus,
-.filtri-row select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(37,99,235,0.12);
-}
+.filtri-row select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.12); }
 .btn-reset {
   background: none;
   border: 1px solid var(--border2);
@@ -208,8 +175,23 @@ header {
   font-family: 'DM Sans', sans-serif;
 }
 .btn-reset:hover { border-color: var(--red); color: var(--red); background: #fee2e2; }
+.btn-export {
+  background: none;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  font-size: 0.78rem;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+.btn-export:hover { border-color: var(--green); color: var(--green); background: #dcfce7; }
 
-/* ── TABELLE ── */
+/* ═══════════════════════════════════════════════════════════
+   TABELLE
+═══════════════════════════════════════════════════════════ */
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
 th {
@@ -229,23 +211,19 @@ th.sortable { cursor: pointer; }
 th.sortable:hover { color: var(--accent); }
 th.sort-asc::after  { content: ' ↑'; color: var(--accent); }
 th.sort-desc::after { content: ' ↓'; color: var(--accent); }
-td {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
-  color: var(--text2);
-}
+td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text2); }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #eef3ff; }
-
-/* Highlight righe in ritardo */
 tr.row-ritardo td { background: #fff5f5; }
 tr.row-ritardo:hover td { background: #fee2e2; }
-
-/* Highlight righe urgenti (≤3 giorni) */
 tr.row-urgente td { background: #fffbeb; }
 tr.row-urgente:hover td { background: #fef3c7; }
+tr.row-silente td { background: #faf5ff; }
+tr.row-silente:hover td { background: #ede9fe; }
 
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTI DATI
+═══════════════════════════════════════════════════════════ */
 .codice {
   font-family: 'DM Mono', monospace;
   font-size: 0.71rem;
@@ -256,17 +234,31 @@ tr.row-urgente:hover td { background: #fef3c7; }
   border-radius: 3px;
   display: inline-block;
 }
-
-/* ── BADGE ── */
-.badge {
-  display: inline-block;
-  padding: 3px 9px;
-  border-radius: 5px;
+.gg-aperti {
+  font-family: 'DM Mono', monospace;
   font-size: 0.7rem;
-  font-weight: 700;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-left: 4px;
+}
+.gg-aperti.lungo { color: var(--purple); background: #ede9fe; border-color: #c4b5fd; }
+.silente-badge {
+  font-size: 0.68rem;
+  color: var(--purple);
+  background: #ede9fe;
+  border: 1px solid #c4b5fd;
+  padding: 1px 6px;
+  border-radius: 3px;
   font-family: 'DM Mono', monospace;
   white-space: nowrap;
 }
+
+/* ── BADGE STATO ── */
+.badge { display: inline-block; padding: 3px 9px; border-radius: 5px; font-size: 0.7rem; font-weight: 700; font-family: 'DM Mono', monospace; white-space: nowrap; }
 .badge.aperto                    { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
 .badge.in-corso                  { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
 .badge.completato                { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
@@ -278,82 +270,35 @@ tr.row-urgente:hover td { background: #fef3c7; }
 
 /* ── SCADENZA CHIP ── */
 .scad-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 0.82rem; }
-.dot-urgente {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--orange);
-  flex-shrink: 0;
-  animation: pulse 1.5s infinite;
-}
-.dot-scaduta {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--red);
-  flex-shrink: 0;
-}
+.dot-urgente { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); flex-shrink: 0; animation: pulse 1.5s infinite; }
+.dot-scaduta { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
 .testo-urgente { color: var(--orange); font-weight: 700; }
 .testo-scaduta { color: var(--red);    font-weight: 700; }
 .stim { font-size: 0.69rem; color: var(--muted); font-style: italic; }
 
-/* ── CHARTS ── */
+/* ── RUOLI ── */
+.role-label { display: block; font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 1px; }
+.role-value { font-size: 0.82rem; color: var(--text2); font-weight: 500; }
+.role-value.pending { color: var(--orange); font-style: italic; }
+
+/* ── LINK RESPONSABILE / OWNER ── */
+.resp-link {
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 500;
+  border-bottom: 1px dashed rgba(37,99,235,0.35);
+  transition: border-color 0.15s;
+}
+.resp-link:hover { border-bottom-color: var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════
+   GRAFICI
+═══════════════════════════════════════════════════════════ */
 .chart-container { position: relative; height: 220px; }
 
-/* ── BARRE TIPO CAMPIONATURE ── */
-.tipo-bars { display: flex; flex-direction: column; gap: 16px; padding-top: 4px; }
-.tipo-bar-row { display: flex; flex-direction: column; gap: 5px; }
-.tipo-bar-header { display: flex; justify-content: space-between; font-size: 0.8rem; }
-.tipo-bar-label { color: var(--text2); font-weight: 500; }
-.tipo-bar-nums  { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.74rem; font-weight: 500; }
-.tipo-bar-track { height: 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
-.tipo-bar-fill  { height: 100%; border-radius: 5px; transition: width 0.6s ease; }
-
-/* ── PERFORMANCE ── */
-.user-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-.user-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-}
-.user-name {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.user-avatar {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.user-bars { display: flex; flex-direction: column; gap: 9px; }
-.user-bar-row { display: flex; align-items: center; gap: 8px; font-size: 0.76rem; }
-.user-bar-label { color: var(--muted); width: 80px; flex-shrink: 0; font-weight: 500; }
-.user-bar-track { flex: 1; height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.user-bar-fill  { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-.user-bar-fill.verde { background: var(--green); }
-.user-bar-fill.blu   { background: var(--blue); }
-.user-bar-fill.rosso { background: var(--red); }
-.user-bar-num {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.74rem;
-  color: var(--text2);
-  width: 16px;
-  text-align: right;
-  font-weight: 600;
-}
-
-/* ── TABS ── */
+/* ═══════════════════════════════════════════════════════════
+   TABS PRINCIPALI
+═══════════════════════════════════════════════════════════ */
 .tabs { display: flex; gap: 2px; margin-bottom: 20px; border-bottom: 2px solid var(--border); }
 .tab {
   padding: 9px 18px;
@@ -373,101 +318,10 @@ tr.row-urgente:hover td { background: #fef3c7; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
-/* ── BANNER IN ATTESA CLASSIFICAZIONE ── */
-.banner-attesa {
-  background: #fefce8;
-  border: 1px solid #fde047;
-  border-left: 4px solid #d97706;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.banner-attesa-testo {
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: #78350f;
-}
-.banner-attesa-count {
-  font-family: 'DM Mono', monospace;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #d97706;
-  background: #fef3c7;
-  border: 1px solid #fde047;
-  padding: 2px 12px;
-  border-radius: 6px;
-  white-space: nowrap;
-}
-.banner-attesa-link {
-  font-size: 0.78rem;
-  color: #d97706;
-  cursor: pointer;
-  text-decoration: underline;
-  white-space: nowrap;
-}
-.banner-attesa-link:hover { color: #92400e; }
-
-/* ── AUDIT CHAIN ── */
-.audit-table table { font-size: 0.81rem; }
-.audit-chain {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.audit-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-.audit-step-label {
-  font-size: 0.62rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 700;
-}
-.audit-step-value {
-  font-size: 0.78rem;
-  color: var(--text2);
-  font-weight: 500;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2px 7px;
-  white-space: nowrap;
-}
-.audit-step-value.pending {
-  color: var(--orange);
-  background: #fef3c7;
-  border-color: #fde047;
-}
-.audit-arrow {
-  color: var(--border2);
-  font-size: 0.9rem;
-  margin-top: 12px;
-}
-.audit-note {
-  font-size: 0.76rem;
-  color: var(--muted);
-  max-width: 220px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ── SUB-TABS (dentro Campionature) ── */
-.sub-tabs {
-  display: flex;
-  gap: 2px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
+/* ═══════════════════════════════════════════════════════════
+   SUB-TABS (dentro Campionature)
+═══════════════════════════════════════════════════════════ */
+.sub-tabs { display: flex; gap: 2px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
 .sub-tab {
   padding: 6px 14px;
   font-size: 0.8rem;
@@ -486,40 +340,171 @@ tr.row-urgente:hover td { background: #fef3c7; }
 .sub-tab-content { display: none; }
 .sub-tab-content.active { display: block; }
 
-/* ── ETICHETTA RUOLO ── */
-.role-label {
-  display: block;
-  font-size: 0.62rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 700;
-  margin-bottom: 1px;
+/* ═══════════════════════════════════════════════════════════
+   BANNER IN ATTESA CLASSIFICAZIONE
+═══════════════════════════════════════════════════════════ */
+.banner-attesa {
+  background: #fefce8;
+  border: 1px solid #fde047;
+  border-left: 4px solid #d97706;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
-.role-value {
-  font-size: 0.82rem;
-  color: var(--text2);
-  font-weight: 500;
-}
-.role-value.pending { color: var(--orange); font-style: italic; }
-
-/* ── EMPTY / FOOTER ── */
-.empty { text-align: center; padding: 36px; color: var(--muted); font-size: 0.85rem; }
-.ultimo-agg {
+.banner-attesa-testo { font-size: 0.84rem; font-weight: 600; color: #78350f; }
+.banner-attesa-count {
   font-family: 'DM Mono', monospace;
-  font-size: 0.72rem;
-  color: var(--muted);
-  margin-top: 20px;
-  text-align: right;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #d97706;
+  background: #fef3c7;
+  border: 1px solid #fde047;
+  padding: 2px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
+.banner-attesa-link { font-size: 0.78rem; color: #d97706; cursor: pointer; text-decoration: underline; white-space: nowrap; }
+.banner-attesa-link:hover { color: #92400e; }
+
+/* ═══════════════════════════════════════════════════════════
+   BARRE TIPO CAMPIONATURE
+═══════════════════════════════════════════════════════════ */
+.tipo-bars { display: flex; flex-direction: column; gap: 16px; padding-top: 4px; }
+.tipo-bar-row { display: flex; flex-direction: column; gap: 5px; }
+.tipo-bar-header { display: flex; justify-content: space-between; font-size: 0.8rem; }
+.tipo-bar-label { color: var(--text2); font-weight: 500; }
+.tipo-bar-nums  { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.74rem; font-weight: 500; }
+.tipo-bar-track { height: 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+.tipo-bar-fill  { height: 100%; border-radius: 5px; transition: width 0.6s ease; }
+
+/* ═══════════════════════════════════════════════════════════
+   VISTA "QUESTA SETTIMANA"
+═══════════════════════════════════════════════════════════ */
+.questa-settimana-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+.week-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  border-left: 3px solid var(--border2);
+}
+.week-card.urgente  { border-left-color: var(--orange); }
+.week-card.scaduto  { border-left-color: var(--red); }
+.week-card.normale  { border-left-color: var(--blue); }
+.week-card-titolo   { font-size: 0.83rem; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+.week-card-meta     { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.week-card-resp     { font-size: 0.76rem; color: var(--muted); }
+
+/* ═══════════════════════════════════════════════════════════
+   TAB PERFORMANCE — SCHEDE UTENTE
+═══════════════════════════════════════════════════════════ */
+.user-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.user-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: box-shadow 0.15s; }
+.user-card:hover { box-shadow: 0 2px 8px rgba(37,99,235,0.12); border-color: var(--accent); }
+.user-name { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.user-bars { display: flex; flex-direction: column; gap: 9px; }
+.user-bar-row { display: flex; align-items: center; gap: 8px; font-size: 0.76rem; }
+.user-bar-label { color: var(--muted); width: 80px; flex-shrink: 0; font-weight: 500; }
+.user-bar-track { flex: 1; height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.user-bar-fill  { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.user-bar-fill.verde { background: var(--green); }
+.user-bar-fill.blu   { background: var(--blue); }
+.user-bar-fill.rosso { background: var(--red); }
+.user-bar-num { font-family: 'DM Mono', monospace; font-size: 0.74rem; color: var(--text2); width: 16px; text-align: right; font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL (Responsabile / Owner)
+═══════════════════════════════════════════════════════════ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,17,28,0.45);
+  z-index: 500;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px 24px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1100px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.modal-titolo { font-size: 1.05rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 10px; }
+.modal-subtitle { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
+.modal-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.modal-close { background: none; border: 1px solid var(--border2); color: var(--muted); font-size: 1.1rem; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+.modal-close:hover { border-color: var(--red); color: var(--red); }
+.modal-kpi-row { display: flex; gap: 12px; padding: 16px 24px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.modal-kpi { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; min-width: 100px; text-align: center; }
+.modal-kpi .mn { font-family: 'DM Mono', monospace; font-size: 1.5rem; font-weight: 500; line-height: 1; }
+.modal-kpi .me { font-size: 0.68rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
+.modal-kpi.blu    .mn { color: var(--blue); }
+.modal-kpi.verde  .mn { color: var(--green); }
+.modal-kpi.rosso  .mn { color: var(--red); }
+.modal-kpi.orange .mn { color: var(--orange); }
+.modal-kpi.viola  .mn { color: var(--purple); }
+.modal-filtri { padding: 14px 24px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.modal-body { padding: 0 24px 24px; overflow-x: auto; }
+.modal-body table { margin-top: 16px; }
+
+/* ═══════════════════════════════════════════════════════════
+   TOOLTIP GLOBALE
+═══════════════════════════════════════════════════════════ */
+#globalTooltip {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  min-width: 260px;
+  max-width: 360px;
+  background: #ffffff;
+  border: 1px solid #d8dce6;
+  border-radius: 9px;
+  padding: 13px 15px;
+  font-size: 0.79rem;
+  color: #1a1d2e;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+  pointer-events: none;
+  line-height: 1.65;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VARIE
+═══════════════════════════════════════════════════════════ */
+.empty { text-align: center; padding: 36px; color: var(--muted); font-size: 0.85rem; }
+.ultimo-agg { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-top: 20px; text-align: right; padding-top: 12px; border-top: 1px solid var(--border); }
 .ultimo-agg span { color: var(--green); font-weight: 600; }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 1100px) {
-  .kpi-row { grid-template-columns: repeat(3, 1fr); }
-}
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) {
   header { padding: 12px 16px; }
   .logo-text { display: none; }
@@ -529,12 +514,15 @@ tr.row-urgente:hover td { background: #fef3c7; }
   th, td { padding: 8px; }
   .card { padding: 14px 12px; }
 }
-@media (max-width: 480px) {
-  .data-pill { display: none; }
-}
+@media (max-width: 480px) { .data-pill { display: none; } }
 </style>
+
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════ -->
 
 <header>
   <div class="logo">
@@ -549,7 +537,10 @@ tr.row-urgente:hover td { background: #fef3c7; }
 
 <div class="container">
 
-  <!-- ── KPI ── -->
+  <!-- ═══════════════════════════════════════════════════════
+       KPI GLOBALI
+  ═══════════════════════════════════════════════════════ -->
+
   <div class="kpi-row">
     <div class="kpi blu">
       <div class="numero" id="kpiTotale">—</div>
@@ -577,199 +568,221 @@ tr.row-urgente:hover td { background: #fef3c7; }
     </div>
   </div>
 
-  <!-- ── TAB NAV ── -->
+  <!-- ═══════════════════════════════════════════════════════
+       NAVIGAZIONE TAB
+  ═══════════════════════════════════════════════════════ -->
+
   <div class="tabs">
     <button class="tab active" onclick="switchTab('impegni', this)">Impegni</button>
+    <button class="tab" onclick="switchTab('settimana', this)">Questa settimana</button>
     <button class="tab" onclick="switchTab('campionature', this)">Campionature</button>
     <button class="tab" onclick="switchTab('analisi', this)">Analisi comparative</button>
     <button class="tab" onclick="switchTab('performance', this)">Performance</button>
   </div>
 
-  <!-- ════════════════════════════════════════════════════
-       TAB IMPEGNI
-  ════════════════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════
+       TAB: IMPEGNI
+  ═══════════════════════════════════════════════════════ -->
+
   <div class="tab-content active" id="tab-impegni">
 
-    <div class="grid-2">
-      <div class="card" style="margin-bottom:0">
-        <div class="card-header">
-          <div class="card-title">Stato impegni</div>
-        </div>
-        <div class="chart-container">
-          <canvas id="chartStato"></canvas>
-        </div>
-      </div>
-      <div class="card" style="margin-bottom:0">
-        <div class="card-header">
-          <div class="card-title">Scadenze per mese</div>
-        </div>
-        <div class="chart-container">
-          <canvas id="chartScadenze"></canvas>
-        </div>
-      </div>
-    </div>
+```
+<div class="grid-2">
+  <div class="card" style="margin-bottom:0">
+    <div class="card-header"><div class="card-title">Stato impegni</div></div>
+    <div class="chart-container"><canvas id="chartStato"></canvas></div>
+  </div>
+  <div class="card" style="margin-bottom:0">
+    <div class="card-header"><div class="card-title">Scadenze per mese</div></div>
+    <div class="chart-container"><canvas id="chartScadenze"></canvas></div>
+  </div>
+</div>
 
-    <div style="height:16px"></div>
+<div style="height:16px"></div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Trend completamenti nel tempo</div>
-      </div>
-      <div class="chart-container" style="height:180px">
-        <canvas id="chartTrend"></canvas>
-      </div>
-    </div>
+<!-- Burndown: aperti vs chiusi nel tempo -->
+<div class="card">
+  <div class="card-header"><div class="card-title">Andamento impegni — aperti vs completati</div></div>
+  <div class="chart-container" style="height:200px"><canvas id="chartBurndown"></canvas></div>
+</div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Tutti gli impegni</div>
-        <div class="card-count" id="countImpegni">—</div>
-      </div>
-      <div class="filtri-row" style="margin-bottom:14px">
-        <input type="text" id="cercaImpegni" placeholder="Cerca descrizione…" oninput="renderImpegni()">
-        <select id="filtroStatoImp" onchange="renderImpegni()">
-          <option value="">Tutti gli stati</option>
-          <option>Aperto</option>
-          <option>In corso</option>
-          <option>Completato</option>
-          <option>In ritardo</option>
-          <option>Riprogrammato</option>
-          <option>Stand by</option>
-        </select>
-        <select id="filtroRespImp" onchange="renderImpegni()">
-          <option value="">Tutti i responsabili</option>
-        </select>
-        <select id="filtroPeriodoImp" onchange="renderImpegni()">
-          <option value="">Qualsiasi scadenza</option>
-          <option value="scaduti">Già scaduti</option>
-          <option value="7">Prossimi 7 giorni</option>
-          <option value="30">Prossimi 30 giorni</option>
-          <option value="90">Prossimi 90 giorni</option>
-        </select>
-        <button class="btn-reset" onclick="resetFiltriImpegni()">× Reset</button>
-      </div>
-      <div class="table-wrap">
-        <div id="tabellaImpegni"><div class="empty">Caricamento...</div></div>
-      </div>
+<!-- Tabella impegni -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Tutti gli impegni</div>
+    <div class="card-actions">
+      <div class="card-count" id="countImpegni">—</div>
+      <button class="btn-export" onclick="esportaCSV('impegni')">↓ CSV</button>
     </div>
+  </div>
+  <div class="filtri-row" style="margin-bottom:14px">
+    <input type="text" id="cercaImpegni" placeholder="Cerca descrizione…" oninput="renderImpegni()">
+    <select id="filtroStatoImp" onchange="renderImpegni()">
+      <option value="">Tutti gli stati</option>
+      <option>Aperto</option>
+      <option>In corso</option>
+      <option>Completato</option>
+      <option>In ritardo</option>
+      <option>Riprogrammato</option>
+      <option>Stand by</option>
+    </select>
+    <select id="filtroRespImp" onchange="renderImpegni()">
+      <option value="">Tutti i responsabili</option>
+    </select>
+    <select id="filtroPeriodoImp" onchange="renderImpegni()">
+      <option value="">Qualsiasi scadenza</option>
+      <option value="scaduti">Già scaduti</option>
+      <option value="7">Prossimi 7 giorni</option>
+      <option value="30">Prossimi 30 giorni</option>
+      <option value="90">Prossimi 90 giorni</option>
+    </select>
+    <select id="filtroSilenteImp" onchange="renderImpegni()">
+      <option value="">Qualsiasi attività</option>
+      <option value="7">Silenti da 7+ giorni</option>
+      <option value="14">Silenti da 14+ giorni</option>
+      <option value="30">Silenti da 30+ giorni</option>
+    </select>
+    <button class="btn-reset" onclick="resetFiltriImpegni()">× Reset</button>
+  </div>
+  <div class="table-wrap">
+    <div id="tabellaImpegni"><div class="empty">Caricamento...</div></div>
+  </div>
+</div>
+```
 
   </div><!-- /tab-impegni -->
 
-  <!-- ════════════════════════════════════════════════════
-       TAB CAMPIONATURE
-  ════════════════════════════════════════════════════ -->
-  <div class="tab-content" id="tab-campionature">
+  <!-- ═══════════════════════════════════════════════════════
+       TAB: QUESTA SETTIMANA
+  ═══════════════════════════════════════════════════════ -->
 
-    <!-- Banner In attesa classificazione -->
-    <div id="bannerAttesa" class="banner-attesa" style="display:none">
-      <div>
-        <div class="banner-attesa-testo">⚠ Campionature in attesa di classificazione da Piero</div>
-        <div style="font-size:0.76rem;color:#92400e;margin-top:2px">
-          Non è stato ancora definito tipo, owner e scadenza
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="banner-attesa-count" id="bannerAttesaCount">0</span>
-        <span class="banner-attesa-link" onclick="filtraAttesa()">Mostra solo queste →</span>
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-bottom:16px">
-      <div class="card" style="margin-bottom:0">
-        <div class="card-header">
-          <div class="card-title">Distribuzione per tipo</div>
-        </div>
-        <div class="tipo-bars" id="tipoBars">
-          <div class="empty">Caricamento...</div>
-        </div>
-      </div>
-      <div class="card" style="margin-bottom:0">
-        <div class="card-header">
-          <div class="card-title">Stato campionature</div>
-        </div>
-        <div class="chart-container">
-          <canvas id="chartCampStato"></canvas>
-        </div>
-      </div>
-    </div>
-
+  <div class="tab-content" id="tab-settimana">
     <div class="card">
       <div class="card-header">
-        <div class="card-title">Campionature</div>
-        <div class="card-count" id="countCamp">—</div>
+        <div class="card-title">Impegni in scadenza nei prossimi 7 giorni</div>
+        <div class="card-count" id="countSettimana">—</div>
       </div>
-
-      <!-- Sub-tab: Lista | Audit -->
-      <div class="sub-tabs">
-        <button class="sub-tab active" onclick="switchSubTab('lista', this)">Lista</button>
-        <button class="sub-tab" onclick="switchSubTab('audit', this)">Audit flusso</button>
+      <div class="questa-settimana-grid" id="gridSettimana">
+        <div class="empty">Caricamento...</div>
       </div>
-
-      <!-- SUB-TAB: Lista -->
-      <div class="sub-tab-content active" id="sub-lista">
-        <div class="filtri-row" style="margin-bottom:14px">
-          <input type="text" id="cercaCamp" placeholder="Cerca cliente o prodotto…" oninput="renderCampionature()">
-          <select id="filtroStatoCamp" onchange="renderCampionature()">
-            <option value="">Tutti gli stati</option>
-            <option>In attesa classificazione</option>
-            <option>In corso</option>
-            <option>Completata</option>
-            <option>In ritardo</option>
-          </select>
-          <select id="filtroTipoCamp" onchange="renderCampionature()">
-            <option value="">Tutti i tipi</option>
-            <option value="commessa_colore">Commessa colore</option>
-            <option value="commessa_prodotto">Commessa prodotto</option>
-            <option value="progetto">Progetto</option>
-          </select>
-          <select id="filtroOwnerCamp" onchange="renderCampionature()">
-            <option value="">Tutti gli owner</option>
-          </select>
-          <select id="filtroClassificatoreCamp" onchange="renderCampionature()">
-            <option value="">Tutti i classificatori</option>
-          </select>
-          <select id="filtroPeriodoCamp" onchange="renderCampionature()">
-            <option value="">Qualsiasi periodo</option>
-            <option value="7">Ultimi 7 giorni</option>
-            <option value="30">Ultimi 30 giorni</option>
-            <option value="90">Ultimi 90 giorni</option>
-          </select>
-          <button class="btn-reset" onclick="resetFiltriCamp()">× Reset</button>
-        </div>
-        <div class="table-wrap">
-          <div id="tabellaCampionature"><div class="empty">Caricamento...</div></div>
-        </div>
-      </div>
-
-      <!-- SUB-TAB: Audit flusso -->
-      <div class="sub-tab-content audit-table" id="sub-audit">
-        <div class="filtri-row" style="margin-bottom:14px">
-          <select id="filtroStatoAudit" onchange="renderAudit()">
-            <option value="">Tutti gli stati</option>
-            <option>In attesa classificazione</option>
-            <option>In corso</option>
-            <option>Completata</option>
-            <option>In ritardo</option>
-          </select>
-          <select id="filtroOwnerAudit" onchange="renderAudit()">
-            <option value="">Tutti gli owner</option>
-          </select>
-          <button class="btn-reset" onclick="resetFiltriAudit()">× Reset</button>
-        </div>
-        <div class="table-wrap">
-          <div id="tabellaAudit"><div class="empty">Caricamento...</div></div>
-        </div>
-      </div>
-
     </div>
+  </div><!-- /tab-settimana -->
+
+  <!-- ═══════════════════════════════════════════════════════
+       TAB: CAMPIONATURE
+  ═══════════════════════════════════════════════════════ -->
+
+  <div class="tab-content" id="tab-campionature">
+
+```
+<!-- Banner urgenza: campionature in attesa -->
+<div id="bannerAttesa" class="banner-attesa" style="display:none">
+  <div>
+    <div class="banner-attesa-testo">⚠ Campionature in attesa di classificazione</div>
+    <div style="font-size:0.76rem;color:#92400e;margin-top:2px">
+      Tipo, owner e scadenza non ancora definiti
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="banner-attesa-count" id="bannerAttesaCount">0</span>
+    <span class="banner-attesa-link" onclick="filtraAttesa()">Mostra solo queste →</span>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card" style="margin-bottom:0">
+    <div class="card-header"><div class="card-title">Distribuzione per tipo</div></div>
+    <div class="tipo-bars" id="tipoBars"><div class="empty">Caricamento...</div></div>
+  </div>
+  <div class="card" style="margin-bottom:0">
+    <div class="card-header"><div class="card-title">Stato campionature</div></div>
+    <div class="chart-container"><canvas id="chartCampStato"></canvas></div>
+  </div>
+</div>
+
+<div style="height:16px"></div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Campionature</div>
+    <div class="card-actions">
+      <div class="card-count" id="countCamp">—</div>
+      <button class="btn-export" onclick="esportaCSV('campionature')">↓ CSV</button>
+    </div>
+  </div>
+
+  <!-- Sub-tab Lista / Audit -->
+  <div class="sub-tabs">
+    <button class="sub-tab active" onclick="switchSubTab('lista', this)">Lista</button>
+    <button class="sub-tab" onclick="switchSubTab('audit', this)">Audit flusso</button>
+  </div>
+
+  <!-- SUB-TAB: Lista -->
+  <div class="sub-tab-content active" id="sub-lista">
+    <div class="filtri-row" style="margin-bottom:14px">
+      <input type="text" id="cercaCamp" placeholder="Cerca cliente o prodotto…" oninput="renderCampionature()">
+      <select id="filtroStatoCamp" onchange="renderCampionature()">
+        <option value="">Tutti gli stati</option>
+        <option>In attesa classificazione</option>
+        <option>In corso</option>
+        <option>Completata</option>
+        <option>In ritardo</option>
+      </select>
+      <select id="filtroTipoCamp" onchange="renderCampionature()">
+        <option value="">Tutti i tipi</option>
+        <option value="commessa_colore">Commessa colore</option>
+        <option value="commessa_prodotto">Commessa prodotto</option>
+        <option value="progetto">Progetto</option>
+      </select>
+      <select id="filtroOwnerCamp" onchange="renderCampionature()">
+        <option value="">Tutti gli owner</option>
+      </select>
+      <select id="filtroClassificatoreCamp" onchange="renderCampionature()">
+        <option value="">Tutti i classificatori</option>
+      </select>
+      <select id="filtroPeriodoCamp" onchange="renderCampionature()">
+        <option value="">Qualsiasi periodo</option>
+        <option value="7">Ultimi 7 giorni</option>
+        <option value="30">Ultimi 30 giorni</option>
+        <option value="90">Ultimi 90 giorni</option>
+      </select>
+      <button class="btn-reset" onclick="resetFiltriCamp()">× Reset</button>
+    </div>
+    <div class="table-wrap">
+      <div id="tabellaCampionature"><div class="empty">Caricamento...</div></div>
+    </div>
+  </div>
+
+  <!-- SUB-TAB: Audit flusso -->
+  <div class="sub-tab-content" id="sub-audit">
+    <div class="filtri-row" style="margin-bottom:14px">
+      <select id="filtroStatoAudit" onchange="renderAudit()">
+        <option value="">Tutti gli stati</option>
+        <option>In attesa classificazione</option>
+        <option>In corso</option>
+        <option>Completata</option>
+        <option>In ritardo</option>
+      </select>
+      <select id="filtroOwnerAudit" onchange="renderAudit()">
+        <option value="">Tutti gli owner</option>
+      </select>
+      <button class="btn-reset" onclick="resetFiltriAudit()">× Reset</button>
+    </div>
+    <div class="table-wrap">
+      <div id="tabellaAudit"><div class="empty">Caricamento...</div></div>
+    </div>
+  </div>
+
+</div>
+```
 
   </div><!-- /tab-campionature -->
 
-  <!-- ════════════════════════════════════════════════════
-       TAB ANALISI COMPARATIVE
-  ════════════════════════════════════════════════════ -->
-  <div class="tab-content" id="tab-analisi">
+  <!-- ═══════════════════════════════════════════════════════
+       TAB: ANALISI COMPARATIVE
+  ═══════════════════════════════════════════════════════ -->
 
+  <div class="tab-content" id="tab-analisi">
     <div class="card">
       <div class="card-header">
         <div class="card-title">Analisi comparative</div>
@@ -789,32 +802,24 @@ tr.row-urgente:hover td { background: #fef3c7; }
         <div id="tabellaAnalisi"><div class="empty">Caricamento...</div></div>
       </div>
     </div>
-
   </div><!-- /tab-analisi -->
 
-  <!-- ════════════════════════════════════════════════════
-       TAB PERFORMANCE
-  ════════════════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════
+       TAB: PERFORMANCE
+  ═══════════════════════════════════════════════════════ -->
+
   <div class="tab-content" id="tab-performance">
-
     <div class="card" style="margin-bottom:16px">
-      <div class="card-header">
-        <div class="card-title">Impegni per responsabile</div>
-      </div>
-      <div class="chart-container" style="height:280px">
-        <canvas id="chartResponsabili"></canvas>
-      </div>
+      <div class="card-header"><div class="card-title">Impegni per responsabile</div></div>
+      <div class="chart-container" style="height:280px"><canvas id="chartResponsabili"></canvas></div>
     </div>
-
     <div class="card">
       <div class="card-header">
         <div class="card-title">Dettaglio per persona</div>
+        <div style="font-size:0.74rem;color:var(--muted)">Clicca su una scheda per vedere le attività</div>
       </div>
-      <div class="user-grid" id="userGrid">
-        <div class="empty">Caricamento...</div>
-      </div>
+      <div class="user-grid" id="userGrid"><div class="empty">Caricamento...</div></div>
     </div>
-
   </div><!-- /tab-performance -->
 
   <div class="ultimo-agg">
@@ -824,88 +829,140 @@ tr.row-urgente:hover td { background: #fef3c7; }
 
 </div><!-- /container -->
 
-<!-- ── TOOLTIP GLOBALE ── -->
-<div id="globalTooltip" style="
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  min-width: 260px;
-  max-width: 360px;
-  background: #ffffff;
-  border: 1px solid #d8dce6;
-  border-radius: 9px;
-  padding: 13px 15px;
-  font-size: 0.79rem;
-  color: #1a1d2e;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.13);
-  pointer-events: none;
-  line-height: 1.65;
-  font-family: 'DM Sans', sans-serif;
-"></div>
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: RESPONSABILE IMPEGNI
+═══════════════════════════════════════════════════════════ -->
+
+<div class="modal-overlay" id="modalImpOverlay" onclick="chiudiModalSeOverlay(event,'modalImpOverlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-titolo">
+        <div class="modal-avatar" id="modalImpAvatar">—</div>
+        <div>
+          <div id="modalImpNome">—</div>
+          <div class="modal-subtitle">Impegni assegnati</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="chiudiModal('modalImpOverlay')">✕</button>
+    </div>
+    <div class="modal-kpi-row">
+      <div class="modal-kpi blu">  <div class="mn" id="mkpiImpTotale">—</div>   <div class="me">Totali</div>     </div>
+      <div class="modal-kpi verde"><div class="mn" id="mkpiImpComp">—</div>     <div class="me">Completati</div> </div>
+      <div class="modal-kpi blu">  <div class="mn" id="mkpiImpAperti">—</div>   <div class="me">Aperti</div>     </div>
+      <div class="modal-kpi orange"><div class="mn" id="mkpiImpStandby">—</div> <div class="me">Stand by</div>   </div>
+      <div class="modal-kpi rosso"><div class="mn" id="mkpiImpRitardo">—</div>  <div class="me">In ritardo</div> </div>
+    </div>
+    <div class="modal-filtri">
+      <input type="text" id="mImpCerca" placeholder="Cerca descrizione…" oninput="renderModalImpegni()" style="min-width:180px">
+      <select id="mImpFiltroStato" onchange="renderModalImpegni()">
+        <option value="">Tutti gli stati</option>
+        <option>Aperto</option><option>In corso</option><option>Completato</option>
+        <option>In ritardo</option><option>Riprogrammato</option><option>Stand by</option>
+      </select>
+      <select id="mImpFiltroPeriodo" onchange="renderModalImpegni()">
+        <option value="">Qualsiasi scadenza</option>
+        <option value="7">Prossimi 7 giorni</option>
+        <option value="30">Prossimi 30 giorni</option>
+        <option value="scaduti">Già scaduti</option>
+      </select>
+      <button class="btn-reset" onclick="resetModalImpFiltri()">× Reset</button>
+      <div class="card-count" id="mImpCount" style="margin-left:auto">—</div>
+    </div>
+    <div class="modal-body">
+      <div id="modalImpTabella"><div class="empty">Caricamento...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL: OWNER CAMPIONATURE
+═══════════════════════════════════════════════════════════ -->
+
+<div class="modal-overlay" id="modalCampOverlay" onclick="chiudiModalSeOverlay(event,'modalCampOverlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-titolo">
+        <div class="modal-avatar" id="modalCampAvatar">—</div>
+        <div>
+          <div id="modalCampNome">—</div>
+          <div class="modal-subtitle">Campionature assegnate</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="chiudiModal('modalCampOverlay')">✕</button>
+    </div>
+    <div class="modal-kpi-row">
+      <div class="modal-kpi blu">  <div class="mn" id="mkpiCampTotale">—</div>  <div class="me">Totali</div>     </div>
+      <div class="modal-kpi verde"><div class="mn" id="mkpiCampComp">—</div>    <div class="me">Completate</div> </div>
+      <div class="modal-kpi orange"><div class="mn" id="mkpiCampCorso">—</div>  <div class="me">In corso</div>   </div>
+      <div class="modal-kpi rosso"><div class="mn" id="mkpiCampRit">—</div>     <div class="me">In ritardo</div> </div>
+    </div>
+    <div class="modal-filtri">
+      <input type="text" id="mCampCerca" placeholder="Cerca cliente o prodotto…" oninput="renderModalCamp()" style="min-width:180px">
+      <select id="mCampFiltroStato" onchange="renderModalCamp()">
+        <option value="">Tutti gli stati</option>
+        <option>In attesa classificazione</option><option>In corso</option>
+        <option>Completata</option><option>In ritardo</option>
+      </select>
+      <button class="btn-reset" onclick="resetModalCampFiltri()">× Reset</button>
+      <div class="card-count" id="mCampCount" style="margin-left:auto">—</div>
+    </div>
+    <div class="modal-body">
+      <div id="modalCampTabella"><div class="empty">Caricamento...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TOOLTIP GLOBALE
+═══════════════════════════════════════════════════════════ -->
+
+<div id="globalTooltip"></div>
 
 <script>
-// ============================================================
-// SHAQ — DASHBOARD
-// ============================================================
+// ═══════════════════════════════════════════════════════════════
+// SHAQ DASHBOARD — JavaScript
+// ═══════════════════════════════════════════════════════════════
 
+// ── CONFIGURAZIONE ─────────────────────────────────────────────
 const SUPABASE_URL = 'https://jloinnkluvhvnvhltzri.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_87-e2L0gPGrdVcCsmyZR-Q_tdAv8fU7';
 
-// Colori Chart.js (tema chiaro)
+// Palette colori per Chart.js
 var C = {
-  blue:    '#2563eb',
-  blueA:   'rgba(37,99,235,0.7)',
-  green:   '#16a34a',
-  greenA:  'rgba(22,163,74,0.7)',
-  red:     '#dc2626',
-  redA:    'rgba(220,38,38,0.7)',
-  orange:  '#d97706',
-  orangeA: 'rgba(217,119,6,0.7)',
+  blue:    '#2563eb', blueA:   'rgba(37,99,235,0.7)',
+  green:   '#16a34a', greenA:  'rgba(22,163,74,0.7)',
+  red:     '#dc2626', redA:    'rgba(220,38,38,0.7)',
+  orange:  '#d97706', orangeA: 'rgba(217,119,6,0.7)',
   purple:  '#7c3aed',
   muted:   '#636882',
   grid:    '#e5e7ef',
   label:   '#636882'
 };
 
+// ── STATO GLOBALE ──────────────────────────────────────────────
 var charts       = {};
 var _impegni     = [];
 var _campionature = [];
 var _analisi     = [];
-var sortImp      = { col: null, dir: 1 };
+var _tooltips    = [];   // array tooltip indicizzati (evita problemi con apici)
+var sortImp      = { col: 'scadenza', dir: 1 };  // default: scadenza crescente
 var sortCamp     = { col: null, dir: 1 };
 
-// ── FETCH ──────────────────────────────────────────────────
+// ── FETCH SUPABASE ─────────────────────────────────────────────
 async function fetchTabella(nome) {
   var risposta = await fetch(SUPABASE_URL + '/rest/v1/' + nome + '?select=*', {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY
-    }
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
   });
   return risposta.json();
 }
 
-// ── UTILITY ────────────────────────────────────────────────
-function badge(stato) {
-  if (!stato) return '<span class="badge aperto">Aperto</span>';
-  var cls = stato.toLowerCase().replace(/ /g, '-');
-  return '<span class="badge ' + cls + '">' + stato + '</span>';
-}
-
-// Per gli impegni: se stato è "In corso" ma la nota inizia con "BLOCCATO:"
-// mostra "Stand by" finché Apps Script non scrive direttamente stato = 'Stand by'
-function badgeImpegno(stato, note) {
-  if (stato === 'In corso' && note && note.indexOf('BLOCCATO:') === 0) {
-    return '<span class="badge stand-by">Stand by</span>';
-  }
-  return badge(stato);
-}
+// ═══════════════════════════════════════════════════════════════
+// UTILITY GENERALI
+// ═══════════════════════════════════════════════════════════════
 
 function dataIT(d) {
   if (!d) return '—';
-  return new Date(d).toLocaleDateString('it-IT', {
-    day: '2-digit', month: '2-digit', year: 'numeric'
-  });
+  return new Date(d).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
 function initiali(nome) {
@@ -914,52 +971,83 @@ function initiali(nome) {
 }
 
 function destroyChart(id) {
-  if (charts[id]) {
-    charts[id].destroy();
-    delete charts[id];
-  }
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
 }
 
-// Restituisce i giorni alla scadenza (negativo = già scaduta)
+// Giorni alla scadenza — negativo se già scaduta
 function giorniAllaScadenza(dataStr) {
   if (!dataStr) return null;
-  var oggi = new Date();
-  oggi.setHours(0, 0, 0, 0);
-  var scad = new Date(dataStr);
-  scad.setHours(0, 0, 0, 0);
+  var oggi = new Date(); oggi.setHours(0,0,0,0);
+  var scad = new Date(dataStr); scad.setHours(0,0,0,0);
   return Math.round((scad - oggi) / 86400000);
 }
 
-// Chip scadenza con indicatore visivo urgenza
+// Giorni trascorsi dall'ultimo aggiornamento
+function giorniSenzaAggiornamento(dataStr) {
+  if (!dataStr) return null;
+  var oggi = new Date(); oggi.setHours(0,0,0,0);
+  var data = new Date(dataStr); data.setHours(0,0,0,0);
+  return Math.round((oggi - data) / 86400000);
+}
+
+// Giorni dall'apertura (data_ultimo_aggiornamento o data_richiesta come proxy)
+function giorniAperti(item) {
+  var ref = item.data_ultimo_aggiornamento || item.data_richiesta;
+  if (!ref) return null;
+  var oggi = new Date(); oggi.setHours(0,0,0,0);
+  var data = new Date(ref); data.setHours(0,0,0,0);
+  return Math.round((oggi - data) / 86400000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// COMPONENTI BADGE E CHIP
+// ═══════════════════════════════════════════════════════════════
+
+function badge(stato) {
+  if (!stato) return '<span class="badge aperto">Aperto</span>';
+  var cls = stato.toLowerCase().replace(/ /g, '-');
+  return '<span class="badge ' + cls + '">' + stato + '</span>';
+}
+
+// Impegni: rileva "Stand by" anche da prefisso BLOCCATO: nelle note
+// (rimuovere quando Apps Script scriverà direttamente stato = 'Stand by')
+function badgeImpegno(stato, note) {
+  if (stato === 'In corso' && note && note.indexOf('BLOCCATO:') === 0) {
+    return '<span class="badge stand-by">Stand by</span>';
+  }
+  return badge(stato);
+}
+
+// Stato effettivo tenendo conto del workaround BLOCCATO:
+function statoEffettivoImpegno(i) {
+  return (i.stato === 'In corso' && i.note && i.note.indexOf('BLOCCATO:') === 0)
+    ? 'Stand by'
+    : i.stato;
+}
+
+// Chip scadenza colorato in base a urgenza e stato
 function scadenzaChip(dataStr, stimata, stato) {
   if (!dataStr) return '—';
   var testo = dataIT(dataStr);
   var stimataTesto = stimata ? ' <span class="stim">(~)</span>' : '';
 
-  // Completato: data in verde, nessun allarme
+  // Completato: verde neutro, nessun allarme
   if (stato === 'Completato' || stato === 'Completata') {
     return '<span style="color:var(--green);font-weight:600;font-size:0.82rem">' + testo + stimataTesto + '</span>';
   }
 
   var gg = giorniAllaScadenza(dataStr);
   if (gg === null) return testo + stimataTesto;
-
   if (gg < 0) {
-    return '<span class="scad-chip testo-scaduta">' +
-           '<span class="dot-scaduta"></span>' +
-           testo + stimataTesto +
-           '</span>';
+    return '<span class="scad-chip testo-scaduta"><span class="dot-scaduta"></span>' + testo + stimataTesto + '</span>';
   }
   if (gg <= 3) {
-    return '<span class="scad-chip testo-urgente">' +
-           '<span class="dot-urgente"></span>' +
-           testo + ' (' + gg + 'gg)' + stimataTesto +
-           '</span>';
+    return '<span class="scad-chip testo-urgente"><span class="dot-urgente"></span>' + testo + ' (' + gg + 'gg)' + stimataTesto + '</span>';
   }
   return testo + stimataTesto;
 }
 
-// Classe CSS per evidenziare righe critiche
+// Classe CSS di evidenziazione riga
 function rowClass(item) {
   if (!item.scadenza) return '';
   if (item.stato === 'Completato' || item.stato === 'Completata') return '';
@@ -969,9 +1057,20 @@ function rowClass(item) {
   return '';
 }
 
-// ── TOOLTIP GLOBALE ────────────────────────────────────────
+// Chip "giorni aperti" — mostra in viola se >21 giorni
+function ggApertiChip(item) {
+  if (item.stato === 'Completato' || item.stato === 'Completata') return '';
+  var gg = giorniAperti(item);
+  if (gg === null || gg <= 0) return '';
+  var cls = gg > 21 ? 'gg-aperti lungo' : 'gg-aperti';
+  return '<span class="' + cls + '">' + gg + 'gg</span>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOOLTIP GLOBALE
+// ═══════════════════════════════════════════════════════════════
+
 var tt = document.getElementById('globalTooltip');
-var _tooltips = []; // array globale: evita problemi con apici nei testi
 
 function mostraTooltip(e, idx) {
   tt.innerHTML = _tooltips[idx] || '';
@@ -988,62 +1087,57 @@ function posizionaTooltip(e) {
   tt.style.top  = y + 'px';
 }
 
-function nascondiTooltip() {
-  tt.style.display = 'none';
-}
+function nascondiTooltip() { tt.style.display = 'none'; }
 
 document.addEventListener('mousemove', function(e) {
   if (tt.style.display === 'block') posizionaTooltip(e);
 });
 
 function ttRow(label, val) {
-  var testo = (val !== null && val !== undefined && val !== '') ? String(val).replace(/</g, '&lt;') : '—';
+  var testo = (val !== null && val !== undefined && val !== '')
+    ? String(val).replace(/</g, '&lt;')
+    : '—';
   return '<div style="display:flex;gap:8px;margin-bottom:4px">' +
     '<span style="color:#636882;min-width:95px;flex-shrink:0;font-weight:600">' + label + '</span>' +
-    '<span style="color:#1a1d2e">' + testo + '</span>' +
-    '</div>';
+    '<span style="color:#1a1d2e">' + testo + '</span></div>';
 }
 
-// Registra un tooltip e restituisce l'indice
+// Registra un tooltip nell'array globale e restituisce l'indice
 function regTooltip(html) {
   _tooltips.push(html);
   return _tooltips.length - 1;
 }
 
-// ── TABS ───────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// NAVIGAZIONE — TABS E SUB-TABS
+// ═══════════════════════════════════════════════════════════════
+
 function switchTab(nome, el) {
-  document.querySelectorAll('.tab').forEach(function(t) {
-    t.classList.remove('active');
-  });
-  document.querySelectorAll('.tab-content').forEach(function(t) {
-    t.classList.remove('active');
-  });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
   el.classList.add('active');
   document.getElementById('tab-' + nome).classList.add('active');
 }
 
-// Sub-tabs dentro Campionature
 function switchSubTab(nome, el) {
-  document.querySelectorAll('.sub-tab').forEach(function(t) {
-    t.classList.remove('active');
-  });
-  document.querySelectorAll('.sub-tab-content').forEach(function(t) {
-    t.classList.remove('active');
-  });
+  document.querySelectorAll('.sub-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.sub-tab-content').forEach(function(t) { t.classList.remove('active'); });
   el.classList.add('active');
   document.getElementById('sub-' + nome).classList.add('active');
 }
 
-// Scorciatoia banner: filtra solo In attesa classificazione
+// Banner: filtra su "In attesa classificazione" e apre sub-tab Lista
 function filtraAttesa() {
   document.getElementById('filtroStatoCamp').value = 'In attesa classificazione';
-  // Assicura che il sub-tab Lista sia attivo
   var subTabLista = document.querySelector('.sub-tab');
   if (subTabLista) switchSubTab('lista', subTabLista);
   renderCampionature();
 }
 
-// ── SORT ───────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// ORDINAMENTO TABELLE
+// ═══════════════════════════════════════════════════════════════
+
 function sortBy(arr, col, dir) {
   return arr.slice().sort(function(a, b) {
     var va = a[col] || '';
@@ -1055,36 +1149,26 @@ function sortBy(arr, col, dir) {
 }
 
 function toggleSortImp(col, thEl) {
-  if (sortImp.col === col) {
-    sortImp.dir *= -1;
-  } else {
-    sortImp.col = col;
-    sortImp.dir = 1;
-  }
-  document.querySelectorAll('#tabellaImpegni th.sortable').forEach(function(t) {
-    t.classList.remove('sort-asc', 'sort-desc');
-  });
+  if (sortImp.col === col) { sortImp.dir *= -1; } else { sortImp.col = col; sortImp.dir = 1; }
+  document.querySelectorAll('#tabellaImpegni th.sortable').forEach(function(t) { t.classList.remove('sort-asc', 'sort-desc'); });
   thEl.classList.add(sortImp.dir === 1 ? 'sort-asc' : 'sort-desc');
   renderImpegni();
 }
 
 function toggleSortCamp(col, thEl) {
-  if (sortCamp.col === col) {
-    sortCamp.dir *= -1;
-  } else {
-    sortCamp.col = col;
-    sortCamp.dir = 1;
-  }
-  document.querySelectorAll('#tabellaCampionature th.sortable').forEach(function(t) {
-    t.classList.remove('sort-asc', 'sort-desc');
-  });
+  if (sortCamp.col === col) { sortCamp.dir *= -1; } else { sortCamp.col = col; sortCamp.dir = 1; }
+  document.querySelectorAll('#tabellaCampionature th.sortable').forEach(function(t) { t.classList.remove('sort-asc', 'sort-desc'); });
   thEl.classList.add(sortCamp.dir === 1 ? 'sort-asc' : 'sort-desc');
   renderCampionature();
 }
 
-// ── POPOLA SELECT ──────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// UTILITY SELECT
+// ═══════════════════════════════════════════════════════════════
+
 function popolaSelect(selectId, valori) {
   var sel = document.getElementById(selectId);
+  if (!sel) return;
   var current = sel.value;
   while (sel.options.length > 1) sel.remove(1);
   valori.sort().forEach(function(v) {
@@ -1096,45 +1180,60 @@ function popolaSelect(selectId, valori) {
   if (current) sel.value = current;
 }
 
-// ── RENDER IMPEGNI ─────────────────────────────────────────
-function renderImpegni() {
-  var cerca        = document.getElementById('cercaImpegni').value.toLowerCase();
-  var filtroStato  = document.getElementById('filtroStatoImp').value;
-  var filtroResp   = document.getElementById('filtroRespImp').value;
-  var filtroPeriodo = document.getElementById('filtroPeriodoImp').value;
+// ═══════════════════════════════════════════════════════════════
+// RENDER — IMPEGNI
+// ═══════════════════════════════════════════════════════════════
 
-  var oggi = new Date();
-  oggi.setHours(0, 0, 0, 0);
+function renderImpegni() {
+  var cerca         = document.getElementById('cercaImpegni').value.toLowerCase();
+  var filtroStato   = document.getElementById('filtroStatoImp').value;
+  var filtroResp    = document.getElementById('filtroRespImp').value;
+  var filtroPeriodo = document.getElementById('filtroPeriodoImp').value;
+  var filtroSilente = document.getElementById('filtroSilenteImp').value;
+  var oggi = new Date(); oggi.setHours(0,0,0,0);
 
   var lista = _impegni.filter(function(i) {
     var matchCerca = !cerca ||
       (i.descrizione || '').toLowerCase().indexOf(cerca) !== -1 ||
       (i.codice || '').toLowerCase().indexOf(cerca) !== -1;
-    var statoEffettivo = (i.stato === 'In corso' && i.note && i.note.indexOf('BLOCCATO:') === 0)
-      ? 'Stand by'
-      : i.stato;
-    var matchStato = !filtroStato || statoEffettivo === filtroStato;
+
+    var sEff = statoEffettivoImpegno(i);
+    var matchStato = !filtroStato || sEff === filtroStato;
     var matchResp  = !filtroResp  || i.responsabile === filtroResp;
 
     var matchPeriodo = true;
     if (filtroPeriodo && i.scadenza) {
-      var scad = new Date(i.scadenza);
-      scad.setHours(0, 0, 0, 0);
+      var scad = new Date(i.scadenza); scad.setHours(0,0,0,0);
       var gg = Math.round((scad - oggi) / 86400000);
       if (filtroPeriodo === 'scaduti') {
         matchPeriodo = gg < 0;
       } else {
-        var giorni = parseInt(filtroPeriodo, 10);
-        matchPeriodo = gg >= 0 && gg <= giorni;
+        matchPeriodo = gg >= 0 && gg <= parseInt(filtroPeriodo, 10);
       }
     } else if (filtroPeriodo) {
-      matchPeriodo = false; // nessuna scadenza impostata
+      matchPeriodo = false;
     }
 
-    return matchCerca && matchStato && matchResp && matchPeriodo;
+    var matchSilente = true;
+    if (filtroSilente && i.stato !== 'Completato') {
+      var silGG = giorniSenzaAggiornamento(i.data_ultimo_aggiornamento);
+      matchSilente = silGG !== null && silGG >= parseInt(filtroSilente, 10);
+    }
+
+    return matchCerca && matchStato && matchResp && matchPeriodo && matchSilente;
   });
 
-  if (sortImp.col) lista = sortBy(lista, sortImp.col, sortImp.dir);
+  // Ordinamento di default: scadenza crescente (null in fondo)
+  if (sortImp.col) {
+    lista = sortBy(lista, sortImp.col, sortImp.dir);
+  } else {
+    lista.sort(function(a, b) {
+      if (!a.scadenza && !b.scadenza) return 0;
+      if (!a.scadenza) return 1;
+      if (!b.scadenza) return -1;
+      return a.scadenza < b.scadenza ? -1 : a.scadenza > b.scadenza ? 1 : 0;
+    });
+  }
 
   document.getElementById('countImpegni').textContent = lista.length + ' / ' + _impegni.length;
 
@@ -1154,23 +1253,32 @@ function renderImpegni() {
 
   lista.forEach(function(i) {
     var rc = rowClass(i);
+    var silGG = giorniSenzaAggiornamento(i.data_ultimo_aggiornamento);
+    var silente = (i.stato !== 'Completato' && silGG !== null && silGG >= 7);
+
     var tipHtml =
       ttRow('Codice', i.codice) +
       ttRow('Responsabile', i.responsabile) +
       ttRow('Scadenza', dataIT(i.scadenza) + (i.scadenza_stimata ? ' (stimata)' : '')) +
-      ttRow('Stato', i.stato) +
+      ttRow('Stato', statoEffettivoImpegno(i)) +
       ttRow('Riunione', i.riunione_riferimento) +
+      ttRow('Ultimo aggiorn.', dataIT(i.data_ultimo_aggiornamento)) +
       ttRow('Note', i.note);
     var idx = regTooltip(tipHtml);
 
-    html += '<tr class="' + rc + '"' +
+    html += '<tr class="' + rc + (silente ? ' row-silente' : '') + '"' +
       ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
       ' onmouseleave="nascondiTooltip()">' +
       '<td><span class="codice">' + (i.codice || '—') + '</span></td>' +
-      '<td style="color:var(--text);font-weight:500">' + (i.descrizione || '—') + '</td>' +
-      '<td>' + (i.responsabile || '—') + '</td>' +
+      '<td style="color:var(--text);font-weight:500">' + (i.descrizione || '—') + ggApertiChip(i) + '</td>' +
+      '<td>' +
+        '<span class="resp-link" onclick="apriModalImp(\'' + (i.responsabile||'').replace(/'/g,"&#39;") + '\')">' +
+        (i.responsabile || '—') + '</span>' +
+      '</td>' +
       '<td>' + scadenzaChip(i.scadenza, i.scadenza_stimata, i.stato) + '</td>' +
-      '<td>' + badgeImpegno(i.stato, i.note) + '</td>' +
+      '<td>' + badgeImpegno(i.stato, i.note) +
+        (silente ? ' <span class="silente-badge" title="Nessun aggiornamento da ' + silGG + 'gg">silente ' + silGG + 'gg</span>' : '') +
+      '</td>' +
       '<td style="color:var(--muted);font-size:0.78rem;max-width:220px">' + (i.note || '—') + '</td>' +
       '</tr>';
   });
@@ -1184,21 +1292,67 @@ function resetFiltriImpegni() {
   document.getElementById('filtroStatoImp').value = '';
   document.getElementById('filtroRespImp').value = '';
   document.getElementById('filtroPeriodoImp').value = '';
-  sortImp = { col: null, dir: 1 };
+  document.getElementById('filtroSilenteImp').value = '';
+  sortImp = { col: 'scadenza', dir: 1 };
   renderImpegni();
 }
 
-// ── RENDER CAMPIONATURE ────────────────────────────────────
-function renderCampionature() {
-  var cerca              = document.getElementById('cercaCamp').value.toLowerCase();
-  var filtroStato        = document.getElementById('filtroStatoCamp').value;
-  var filtroTipo         = document.getElementById('filtroTipoCamp').value;
-  var filtroOwner        = document.getElementById('filtroOwnerCamp').value;
-  var filtroClassif      = document.getElementById('filtroClassificatoreCamp').value;
-  var filtroPeriodo      = document.getElementById('filtroPeriodoCamp').value;
+// ═══════════════════════════════════════════════════════════════
+// RENDER — VISTA "QUESTA SETTIMANA"
+// ═══════════════════════════════════════════════════════════════
 
-  var oggi = new Date();
-  oggi.setHours(0, 0, 0, 0);
+function renderSettimana() {
+  var oggi = new Date(); oggi.setHours(0,0,0,0);
+
+  var lista = _impegni.filter(function(i) {
+    if (i.stato === 'Completato') return false;
+    if (!i.scadenza) return false;
+    var gg = giorniAllaScadenza(i.scadenza);
+    return gg !== null && gg >= 0 && gg <= 7;
+  });
+
+  // Ordina per scadenza crescente
+  lista.sort(function(a, b) {
+    return a.scadenza < b.scadenza ? -1 : a.scadenza > b.scadenza ? 1 : 0;
+  });
+
+  document.getElementById('countSettimana').textContent = lista.length;
+
+  if (lista.length === 0) {
+    document.getElementById('gridSettimana').innerHTML = '<div class="empty">Nessun impegno in scadenza nei prossimi 7 giorni</div>';
+    return;
+  }
+
+  var html = lista.map(function(i) {
+    var gg = giorniAllaScadenza(i.scadenza);
+    var cls = gg === 0 ? 'urgente' : gg <= 2 ? 'urgente' : 'normale';
+    var scadLabel = gg === 0 ? 'Oggi' : gg === 1 ? 'Domani' : 'Tra ' + gg + 'gg';
+
+    return '<div class="week-card ' + cls + '">' +
+      '<div class="week-card-titolo">' + (i.descrizione || '—') + '</div>' +
+      '<div class="week-card-meta">' +
+        scadenzaChip(i.scadenza, i.scadenza_stimata, i.stato) +
+        badgeImpegno(i.stato, i.note) +
+        '<span class="week-card-resp">' + (i.responsabile || '—') + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('gridSettimana').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER — CAMPIONATURE (Lista)
+// ═══════════════════════════════════════════════════════════════
+
+function renderCampionature() {
+  var cerca         = document.getElementById('cercaCamp').value.toLowerCase();
+  var filtroStato   = document.getElementById('filtroStatoCamp').value;
+  var filtroTipo    = document.getElementById('filtroTipoCamp').value;
+  var filtroOwner   = document.getElementById('filtroOwnerCamp').value;
+  var filtroClassif = document.getElementById('filtroClassificatoreCamp').value;
+  var filtroPeriodo = document.getElementById('filtroPeriodoCamp').value;
+  var oggi = new Date(); oggi.setHours(0,0,0,0);
 
   var lista = _campionature.filter(function(c) {
     var matchCerca = !cerca ||
@@ -1212,8 +1366,7 @@ function renderCampionature() {
 
     var matchPeriodo = true;
     if (filtroPeriodo && c.data_richiesta) {
-      var dataRich = new Date(c.data_richiesta);
-      dataRich.setHours(0, 0, 0, 0);
+      var dataRich = new Date(c.data_richiesta); dataRich.setHours(0,0,0,0);
       var gg = Math.round((oggi - dataRich) / 86400000);
       matchPeriodo = gg >= 0 && gg <= parseInt(filtroPeriodo, 10);
     } else if (filtroPeriodo) {
@@ -1249,19 +1402,17 @@ function renderCampionature() {
   lista.forEach(function(c) {
     var rc = rowClass(c);
 
-    // Classificato da: legge il campo DB classificato_da_nome
     var classificatoDa = c.classificato_da_nome
       ? '<span class="role-value">' + c.classificato_da_nome + '</span>'
       : '<span class="role-value pending">In attesa</span>';
 
-    // Data classificazione: legge il campo DB data_classificazione
     var dataClassif = c.data_classificazione
       ? '<span style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_classificazione) + '</span>'
       : '<span style="color:var(--muted);font-size:0.78rem">—</span>';
 
-    // Owner
+    // Owner: cliccabile per aprire modal campionature
     var ownerCell = c.owner
-      ? '<span class="role-value">' + c.owner + '</span>'
+      ? '<span class="resp-link" onclick="apriModalCamp(\'' + (c.owner||'').replace(/'/g,"&#39;") + '\')">' + c.owner + '</span>'
       : '<span class="role-value pending">—</span>';
 
     var tipHtml =
@@ -1314,26 +1465,22 @@ function resetFiltriCamp() {
   renderCampionature();
 }
 
-// ── RENDER AUDIT ───────────────────────────────────────────
-// Mostra per ogni campionatura la catena: chi ha mandato → chi ha classificato → chi esegue
+// ═══════════════════════════════════════════════════════════════
+// RENDER — AUDIT FLUSSO CAMPIONATURE
+// ═══════════════════════════════════════════════════════════════
+
 function renderAudit() {
   var filtroStato = document.getElementById('filtroStatoAudit').value;
   var filtroOwner = document.getElementById('filtroOwnerAudit').value;
 
   var lista = _campionature.filter(function(c) {
-    var matchStato = !filtroStato || c.stato === filtroStato;
-    var matchOwner = !filtroOwner || c.owner === filtroOwner;
-    return matchStato && matchOwner;
+    return (!filtroStato || c.stato === filtroStato) &&
+           (!filtroOwner || c.owner === filtroOwner);
   });
 
-  // Ordina: prima In attesa classificazione, poi In ritardo, poi resto
+  // Ordina per priorità operativa: attesa > ritardo > in corso > completata
+  var ordine = { 'In attesa classificazione': 0, 'In ritardo': 1, 'In corso': 2, 'Completata': 3 };
   lista.sort(function(a, b) {
-    var ordine = {
-      'In attesa classificazione': 0,
-      'In ritardo': 1,
-      'In corso': 2,
-      'Completata': 3
-    };
     var oa = ordine[a.stato] !== undefined ? ordine[a.stato] : 4;
     var ob = ordine[b.stato] !== undefined ? ordine[b.stato] : 4;
     return oa - ob;
@@ -1360,34 +1507,26 @@ function renderAudit() {
   lista.forEach(function(c) {
     var rc = rowClass(c);
 
-    // Classificato da: legge classificato_da_nome dal DB
-    var classNome = c.classificato_da_nome || null;
-    var classVal = classNome
-      ? '<span class="role-value">' + classNome + '</span>'
+    var classVal = c.classificato_da_nome
+      ? '<span class="role-value">' + c.classificato_da_nome + '</span>'
       : '<span class="role-value pending">⏳ In attesa</span>';
 
-    // Data classificazione dal DB
     var dataClassifCell = c.data_classificazione
       ? '<span style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_classificazione) + '</span>'
       : '<span style="color:var(--muted);font-size:0.78rem">—</span>';
 
-    // Owner
     var ownerVal = c.owner
-      ? '<span class="role-value">' + c.owner + '</span>'
+      ? '<span class="resp-link" onclick="apriModalCamp(\'' + (c.owner||'').replace(/'/g,"&#39;") + '\')">' + c.owner + '</span>'
       : '<span class="role-value pending">—</span>';
 
-    // Ultimo aggiornamento significativo
-    var ultimoAgg = c.data_ultimo_aggiornamento
-      ? dataIT(c.data_ultimo_aggiornamento)
-      : '—';
+    var ultimoAgg = dataIT(c.data_ultimo_aggiornamento);
 
     var tipHtml =
       ttRow('Codice', c.codice) +
       ttRow('Data richiesta', dataIT(c.data_richiesta)) +
       ttRow('Agente', c.agente) +
       ttRow('Cliente', c.cliente) +
-      ttRow('Prodotti', c.prodotti) +
-      ttRow('Classificato da', classNome || 'Non ancora classificata') +
+      ttRow('Classificato da', c.classificato_da_nome || 'Non ancora classificata') +
       ttRow('Data classif.', dataIT(c.data_classificazione)) +
       ttRow('Owner', c.owner) +
       ttRow('Tipo', c.tipo) +
@@ -1402,10 +1541,7 @@ function renderAudit() {
       ' onmouseleave="nascondiTooltip()">' +
       '<td><span class="codice">' + (c.codice || '—') + '</span></td>' +
       '<td style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_richiesta) + '</td>' +
-      '<td>' +
-        '<span class="role-label">Agente</span>' +
-        '<span class="role-value">' + (c.agente || '—') + '</span>' +
-      '</td>' +
+      '<td><span class="role-label">Agente</span><span class="role-value">' + (c.agente || '—') + '</span></td>' +
       '<td>' + classVal + '</td>' +
       '<td>' + dataClassifCell + '</td>' +
       '<td>' + ownerVal + '</td>' +
@@ -1426,7 +1562,10 @@ function resetFiltriAudit() {
   renderAudit();
 }
 
-// ── RENDER ANALISI ─────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// RENDER — ANALISI COMPARATIVE
+// ═══════════════════════════════════════════════════════════════
+
 function renderAnalisi() {
   var cerca       = document.getElementById('cercaAnalisi').value.toLowerCase();
   var filtroStato = document.getElementById('filtroStatoAnalisi').value;
@@ -1435,8 +1574,7 @@ function renderAnalisi() {
     var matchCerca = !cerca ||
       (a.prodotto_concorrente || '').toLowerCase().indexOf(cerca) !== -1 ||
       (a.produttore || '').toLowerCase().indexOf(cerca) !== -1;
-    var matchStato = !filtroStato || a.stato === filtroStato;
-    return matchCerca && matchStato;
+    return matchCerca && (!filtroStato || a.stato === filtroStato);
   });
 
   document.getElementById('countAnalisi').textContent = lista.length + ' / ' + _analisi.length;
@@ -1447,16 +1585,12 @@ function renderAnalisi() {
   }
 
   var html = '<table><thead><tr>' +
-    '<th>Codice</th>' +
-    '<th>Prodotto concorrente</th>' +
-    '<th>Produttore</th>' +
-    '<th>Agente</th>' +
-    '<th>Cliente</th>' +
-    '<th>Stato</th>' +
+    '<th>Codice</th><th>Prodotto concorrente</th><th>Produttore</th>' +
+    '<th>Agente</th><th>Cliente</th><th>Stato</th>' +
     '</tr></thead><tbody>';
 
   lista.forEach(function(a) {
-    var tooltipHtml =
+    var tipHtml =
       ttRow('Codice', a.codice) +
       ttRow('Prodotto', a.prodotto_concorrente) +
       ttRow('Produttore', a.produttore) +
@@ -1465,7 +1599,7 @@ function renderAnalisi() {
       ttRow('Apertura', dataIT(a.data_apertura)) +
       ttRow('Chiusura', dataIT(a.data_chiusura)) +
       ttRow('Nota tecnica', a.nota_tecnica);
-    var idx = regTooltip(tooltipHtml);
+    var idx = regTooltip(tipHtml);
 
     html += '<tr' +
       ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
@@ -1489,7 +1623,377 @@ function resetFiltriAnalisi() {
   renderAnalisi();
 }
 
-// ── CARICA TUTTO ───────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// MODAL — RESPONSABILE IMPEGNI
+// ═══════════════════════════════════════════════════════════════
+
+var _modalImpNome = '';
+
+function apriModalImp(nome) {
+  _modalImpNome = nome;
+  document.getElementById('modalImpNome').textContent = nome;
+  document.getElementById('modalImpAvatar').textContent = initiali(nome);
+  document.getElementById('mImpCerca').value = '';
+  document.getElementById('mImpFiltroStato').value = '';
+  document.getElementById('mImpFiltroPeriodo').value = '';
+  renderModalImpegni();
+  apriModal('modalImpOverlay');
+}
+
+function renderModalImpegni() {
+  var cerca    = document.getElementById('mImpCerca').value.toLowerCase();
+  var fStato   = document.getElementById('mImpFiltroStato').value;
+  var fPeriodo = document.getElementById('mImpFiltroPeriodo').value;
+  var oggi = new Date(); oggi.setHours(0,0,0,0);
+
+  var tutti = _impegni.filter(function(i) { return i.responsabile === _modalImpNome; });
+
+  // KPI sul totale non filtrato
+  document.getElementById('mkpiImpTotale').textContent   = tutti.length;
+  document.getElementById('mkpiImpComp').textContent     = tutti.filter(function(i) { return i.stato === 'Completato'; }).length;
+  document.getElementById('mkpiImpAperti').textContent   = tutti.filter(function(i) { return i.stato === 'Aperto' || i.stato === 'In corso'; }).length;
+  document.getElementById('mkpiImpStandby').textContent  = tutti.filter(function(i) { return statoEffettivoImpegno(i) === 'Stand by'; }).length;
+  document.getElementById('mkpiImpRitardo').textContent  = tutti.filter(function(i) { return i.stato === 'In ritardo'; }).length;
+
+  var lista = tutti.filter(function(i) {
+    var matchCerca = !cerca ||
+      (i.descrizione || '').toLowerCase().indexOf(cerca) !== -1 ||
+      (i.codice || '').toLowerCase().indexOf(cerca) !== -1;
+    var sEff = statoEffettivoImpegno(i);
+    var matchStato = !fStato || sEff === fStato;
+    var matchPeriodo = true;
+    if (fPeriodo && i.scadenza) {
+      var scad = new Date(i.scadenza); scad.setHours(0,0,0,0);
+      var gg = Math.round((scad - oggi) / 86400000);
+      if (fPeriodo === 'scaduti') { matchPeriodo = gg < 0; }
+      else { matchPeriodo = gg >= 0 && gg <= parseInt(fPeriodo, 10); }
+    } else if (fPeriodo) { matchPeriodo = false; }
+    return matchCerca && matchStato && matchPeriodo;
+  });
+
+  // Ordina: critici prima, completati in fondo
+  var ordine = { 'In ritardo': 0, 'Stand by': 1, 'Aperto': 2, 'In corso': 3, 'Riprogrammato': 4, 'Completato': 5 };
+  lista.sort(function(a, b) {
+    var oa = ordine[statoEffettivoImpegno(a)] !== undefined ? ordine[statoEffettivoImpegno(a)] : 3;
+    var ob = ordine[statoEffettivoImpegno(b)] !== undefined ? ordine[statoEffettivoImpegno(b)] : 3;
+    if (oa !== ob) return oa - ob;
+    if (!a.scadenza) return 1;
+    if (!b.scadenza) return -1;
+    return a.scadenza < b.scadenza ? -1 : 1;
+  });
+
+  document.getElementById('mImpCount').textContent = lista.length + ' / ' + tutti.length;
+
+  if (lista.length === 0) {
+    document.getElementById('modalImpTabella').innerHTML = '<div class="empty">Nessun risultato</div>';
+    return;
+  }
+
+  var html = '<table><thead><tr>' +
+    '<th>Codice</th><th>Descrizione</th><th>Scadenza</th><th>Stato</th><th>Riunione</th><th>Note</th>' +
+    '</tr></thead><tbody>';
+
+  lista.forEach(function(i) {
+    var rc = rowClass(i);
+    var tipHtml =
+      ttRow('Codice', i.codice) +
+      ttRow('Scadenza', dataIT(i.scadenza) + (i.scadenza_stimata ? ' (stimata)' : '')) +
+      ttRow('Stato', statoEffettivoImpegno(i)) +
+      ttRow('Riunione', i.riunione_riferimento) +
+      ttRow('Ultimo aggiorn.', dataIT(i.data_ultimo_aggiornamento)) +
+      ttRow('Note', i.note);
+    var idx = regTooltip(tipHtml);
+
+    html += '<tr class="' + rc + '"' +
+      ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
+      ' onmouseleave="nascondiTooltip()">' +
+      '<td><span class="codice">' + (i.codice || '—') + '</span></td>' +
+      '<td style="color:var(--text);font-weight:500;max-width:360px">' + (i.descrizione || '—') + ggApertiChip(i) + '</td>' +
+      '<td>' + scadenzaChip(i.scadenza, i.scadenza_stimata, i.stato) + '</td>' +
+      '<td>' + badgeImpegno(i.stato, i.note) + '</td>' +
+      '<td style="font-size:0.76rem;color:var(--muted)">' + (i.riunione_riferimento || '—') + '</td>' +
+      '<td style="font-size:0.78rem;color:var(--muted);max-width:220px">' + (i.note || '—') + '</td>' +
+      '</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('modalImpTabella').innerHTML = html;
+}
+
+function resetModalImpFiltri() {
+  document.getElementById('mImpCerca').value = '';
+  document.getElementById('mImpFiltroStato').value = '';
+  document.getElementById('mImpFiltroPeriodo').value = '';
+  renderModalImpegni();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODAL — OWNER CAMPIONATURE
+// ═══════════════════════════════════════════════════════════════
+
+var _modalCampNome = '';
+
+function apriModalCamp(nome) {
+  _modalCampNome = nome;
+  document.getElementById('modalCampNome').textContent = nome;
+  document.getElementById('modalCampAvatar').textContent = initiali(nome);
+  document.getElementById('mCampCerca').value = '';
+  document.getElementById('mCampFiltroStato').value = '';
+  renderModalCamp();
+  apriModal('modalCampOverlay');
+}
+
+function renderModalCamp() {
+  var cerca  = document.getElementById('mCampCerca').value.toLowerCase();
+  var fStato = document.getElementById('mCampFiltroStato').value;
+
+  var tutti = _campionature.filter(function(c) { return c.owner === _modalCampNome; });
+
+  document.getElementById('mkpiCampTotale').textContent = tutti.length;
+  document.getElementById('mkpiCampComp').textContent   = tutti.filter(function(c) { return c.stato === 'Completata'; }).length;
+  document.getElementById('mkpiCampCorso').textContent  = tutti.filter(function(c) { return c.stato === 'In corso'; }).length;
+  document.getElementById('mkpiCampRit').textContent    = tutti.filter(function(c) { return c.stato === 'In ritardo'; }).length;
+
+  var lista = tutti.filter(function(c) {
+    var matchCerca = !cerca ||
+      (c.cliente || '').toLowerCase().indexOf(cerca) !== -1 ||
+      (c.prodotti || '').toLowerCase().indexOf(cerca) !== -1;
+    return matchCerca && (!fStato || c.stato === fStato);
+  });
+
+  lista.sort(function(a, b) {
+    var ordine = { 'In ritardo': 0, 'In corso': 1, 'Completata': 2 };
+    var oa = ordine[a.stato] !== undefined ? ordine[a.stato] : 3;
+    var ob = ordine[b.stato] !== undefined ? ordine[b.stato] : 3;
+    return oa - ob;
+  });
+
+  document.getElementById('mCampCount').textContent = lista.length + ' / ' + tutti.length;
+
+  if (lista.length === 0) {
+    document.getElementById('modalCampTabella').innerHTML = '<div class="empty">Nessun risultato</div>';
+    return;
+  }
+
+  var html = '<table><thead><tr>' +
+    '<th>Codice</th><th>Cliente</th><th>Prodotti</th><th>Tipo</th>' +
+    '<th>Data rich.</th><th>Scadenza</th><th>Stato</th><th>Note</th>' +
+    '</tr></thead><tbody>';
+
+  lista.forEach(function(c) {
+    var rc = rowClass(c);
+    var tipHtml =
+      ttRow('Codice', c.codice) +
+      ttRow('Cliente', c.cliente) +
+      ttRow('Prodotti', c.prodotti) +
+      ttRow('Agente', c.agente) +
+      ttRow('Tipo', c.tipo) +
+      ttRow('Data richiesta', dataIT(c.data_richiesta)) +
+      ttRow('Classificato da', c.classificato_da_nome) +
+      ttRow('Scadenza', dataIT(c.scadenza)) +
+      ttRow('Stato', c.stato) +
+      ttRow('Note', c.note);
+    var idx = regTooltip(tipHtml);
+
+    html += '<tr class="' + rc + '"' +
+      ' onmouseenter="mostraTooltip(event,' + idx + ')"' +
+      ' onmouseleave="nascondiTooltip()">' +
+      '<td><span class="codice">' + (c.codice || '—') + '</span></td>' +
+      '<td style="color:var(--text);font-weight:500">' + (c.cliente || '—') + '</td>' +
+      '<td style="font-size:0.78rem;max-width:160px">' + (c.prodotti || '—') + '</td>' +
+      '<td style="font-size:0.76rem;color:var(--muted)">' + (c.tipo ? c.tipo.replace(/_/g, ' ') : '—') + '</td>' +
+      '<td style="font-size:0.78rem;white-space:nowrap">' + dataIT(c.data_richiesta) + '</td>' +
+      '<td>' + scadenzaChip(c.scadenza, false, c.stato) + '</td>' +
+      '<td>' + badge(c.stato) + '</td>' +
+      '<td style="font-size:0.78rem;color:var(--muted);max-width:200px">' + (c.note || '—') + '</td>' +
+      '</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('modalCampTabella').innerHTML = html;
+}
+
+function resetModalCampFiltri() {
+  document.getElementById('mCampCerca').value = '';
+  document.getElementById('mCampFiltroStato').value = '';
+  renderModalCamp();
+}
+
+// ── Utility apertura/chiusura modal generica ──
+function apriModal(overlayId) {
+  document.getElementById(overlayId).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function chiudiModal(overlayId) {
+  document.getElementById(overlayId).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function chiudiModalSeOverlay(e, overlayId) {
+  if (e.target === document.getElementById(overlayId)) chiudiModal(overlayId);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    chiudiModal('modalImpOverlay');
+    chiudiModal('modalCampOverlay');
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// ESPORTAZIONE CSV
+// ═══════════════════════════════════════════════════════════════
+
+function esportaCSV(tipo) {
+  var righe, intestazione, filename;
+
+  if (tipo === 'impegni') {
+    intestazione = ['Codice','Descrizione','Responsabile','Scadenza','Stato','Riunione','Note'];
+    righe = _impegni.map(function(i) {
+      return [i.codice, i.descrizione, i.responsabile, i.scadenza, statoEffettivoImpegno(i), i.riunione_riferimento, i.note];
+    });
+    filename = 'shaq_impegni_' + new Date().toISOString().split('T')[0] + '.csv';
+  } else {
+    intestazione = ['Codice','Data richiesta','Agente','Cliente','Prodotti','Tipo','Classificato da','Data classif.','Owner','Scadenza','Stato'];
+    righe = _campionature.map(function(c) {
+      return [c.codice, c.data_richiesta, c.agente, c.cliente, c.prodotti, c.tipo, c.classificato_da_nome, c.data_classificazione, c.owner, c.scadenza, c.stato];
+    });
+    filename = 'shaq_campionature_' + new Date().toISOString().split('T')[0] + '.csv';
+  }
+
+  var csv = [intestazione].concat(righe).map(function(riga) {
+    return riga.map(function(v) {
+      var s = (v === null || v === undefined) ? '' : String(v);
+      return '"' + s.replace(/"/g, '""') + '"';
+    }).join(',');
+  }).join('\n');
+
+  var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  var url  = URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GRAFICI
+// ═══════════════════════════════════════════════════════════════
+
+function disegnaGrafici() {
+
+  // ── Stato impegni (ciambella) ──
+  var statiCount = { 'Aperto': 0, 'In corso': 0, 'Completato': 0, 'In ritardo': 0, 'Riprogrammato': 0 };
+  _impegni.forEach(function(i) { if (statiCount[i.stato] !== undefined) statiCount[i.stato]++; });
+  destroyChart('stato');
+  charts['stato'] = new Chart(document.getElementById('chartStato').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(statiCount),
+      datasets: [{ data: Object.values(statiCount), backgroundColor: [C.blue, C.orange, C.green, C.red, C.purple], borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: C.label, font: { size: 11 }, boxWidth: 12, padding: 10 } } } }
+  });
+
+  // ── Scadenze per mese (barre) ──
+  var perMese = {};
+  _impegni.filter(function(i) { return i.scadenza; }).forEach(function(i) {
+    var m = i.scadenza.substring(0, 7);
+    perMese[m] = (perMese[m] || 0) + 1;
+  });
+  var mesiOrd = Object.keys(perMese).sort();
+  destroyChart('scadenze');
+  charts['scadenze'] = new Chart(document.getElementById('chartScadenze').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: mesiOrd.map(function(m) { return new Date(m + '-01').toLocaleDateString('it-IT', { month: 'short', year: '2-digit' }); }),
+      datasets: [{ label: 'Scadenze', data: mesiOrd.map(function(m) { return perMese[m]; }), backgroundColor: C.blueA, borderRadius: 4 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: C.label, font: { size: 10 } }, grid: { color: C.grid } }, y: { ticks: { color: C.label, stepSize: 1, font: { size: 10 } }, grid: { color: C.grid } } } }
+  });
+
+  // ── Burndown: aperti vs completati per mese ──
+  var apertiPerMese = {}, compPerMese = {};
+  _impegni.forEach(function(i) {
+    if (i.scadenza) {
+      var m = i.scadenza.substring(0, 7);
+      apertiPerMese[m] = (apertiPerMese[m] || 0) + 1;
+    }
+    if (i.stato === 'Completato' && i.data_ultimo_aggiornamento) {
+      var m2 = i.data_ultimo_aggiornamento.substring(0, 7);
+      compPerMese[m2] = (compPerMese[m2] || 0) + 1;
+    }
+  });
+  var tuttiMesi = Object.keys(Object.assign({}, apertiPerMese, compPerMese)).sort();
+  destroyChart('burndown');
+  charts['burndown'] = new Chart(document.getElementById('chartBurndown').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: tuttiMesi.map(function(m) { return new Date(m + '-01').toLocaleDateString('it-IT', { month: 'short', year: '2-digit' }); }),
+      datasets: [
+        { label: 'Aperti',     data: tuttiMesi.map(function(m) { return apertiPerMese[m] || 0; }), borderColor: C.blue,  backgroundColor: 'rgba(37,99,235,0.06)',  fill: true, tension: 0.4, pointRadius: 3, borderWidth: 2 },
+        { label: 'Completati', data: tuttiMesi.map(function(m) { return compPerMese[m]  || 0; }), borderColor: C.green, backgroundColor: 'rgba(22,163,74,0.06)', fill: true, tension: 0.4, pointRadius: 3, borderWidth: 2 }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: C.label, font: { size: 11 }, boxWidth: 12 } } }, scales: { x: { ticks: { color: C.label, font: { size: 10 } }, grid: { color: C.grid } }, y: { ticks: { color: C.label, stepSize: 1, font: { size: 10 } }, grid: { color: C.grid } } } }
+  });
+
+  // ── Stato campionature (ciambella) ──
+  var campStati = { 'In attesa classificazione': 0, 'In corso': 0, 'Completata': 0, 'In ritardo': 0 };
+  _campionature.forEach(function(c) { if (campStati[c.stato] !== undefined) campStati[c.stato]++; });
+  destroyChart('campStato');
+  charts['campStato'] = new Chart(document.getElementById('chartCampStato').getContext('2d'), {
+    type: 'doughnut',
+    data: { labels: Object.keys(campStati), datasets: [{ data: Object.values(campStati), backgroundColor: [C.muted, C.orange, C.green, C.red], borderWidth: 2, borderColor: '#fff' }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: C.label, font: { size: 11 }, boxWidth: 12, padding: 10 } } } }
+  });
+
+  // ── Impegni per responsabile (barre stacked) ──
+  var perPersona = {};
+  _impegni.forEach(function(i) {
+    if (!i.responsabile) return;
+    if (!perPersona[i.responsabile]) perPersona[i.responsabile] = { completato: 0, aperto: 0, ritardo: 0 };
+    if (i.stato === 'Completato')    perPersona[i.responsabile].completato++;
+    else if (i.stato === 'In ritardo') perPersona[i.responsabile].ritardo++;
+    else                              perPersona[i.responsabile].aperto++;
+  });
+  var nomi = Object.keys(perPersona);
+  destroyChart('responsabili');
+  if (nomi.length > 0) {
+    charts['responsabili'] = new Chart(document.getElementById('chartResponsabili').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: nomi,
+        datasets: [
+          { label: 'Completati', data: nomi.map(function(n) { return perPersona[n].completato; }), backgroundColor: C.greenA, borderRadius: 3 },
+          { label: 'Aperti',     data: nomi.map(function(n) { return perPersona[n].aperto; }),     backgroundColor: C.blueA,  borderRadius: 3 },
+          { label: 'In ritardo', data: nomi.map(function(n) { return perPersona[n].ritardo; }),    backgroundColor: C.redA,   borderRadius: 3 }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: C.label, font: { size: 11 }, boxWidth: 12 } } }, scales: { x: { stacked: true, ticks: { color: C.label, font: { size: 11 } }, grid: { color: C.grid } }, y: { stacked: true, ticks: { color: C.label, font: { size: 11 }, stepSize: 1 }, grid: { color: C.grid } } } }
+    });
+  }
+
+  // ── Schede utente (Performance) ──
+  document.getElementById('userGrid').innerHTML = nomi.length === 0
+    ? '<div class="empty">Nessun dato disponibile</div>'
+    : nomi.map(function(n) {
+        var p = perPersona[n];
+        var mx = Math.max(p.completato, p.aperto, p.ritardo, 1);
+        return '<div class="user-card" onclick="apriModalImp(\'' + n.replace(/'/g,"&#39;") + '\')">' +
+          '<div class="user-name"><div class="user-avatar">' + initiali(n) + '</div>' + n + '</div>' +
+          '<div class="user-bars">' +
+          '<div class="user-bar-row"><div class="user-bar-label">Completati</div><div class="user-bar-track"><div class="user-bar-fill verde" style="width:' + Math.round(p.completato/mx*100) + '%"></div></div><div class="user-bar-num">' + p.completato + '</div></div>' +
+          '<div class="user-bar-row"><div class="user-bar-label">Aperti</div><div class="user-bar-track"><div class="user-bar-fill blu" style="width:' + Math.round(p.aperto/mx*100) + '%"></div></div><div class="user-bar-num">' + p.aperto + '</div></div>' +
+          '<div class="user-bar-row"><div class="user-bar-label">In ritardo</div><div class="user-bar-track"><div class="user-bar-fill rosso" style="width:' + Math.round(p.ritardo/mx*100) + '%"></div></div><div class="user-bar-num">' + p.ritardo + '</div></div>' +
+          '</div></div>';
+      }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CARICAMENTO PRINCIPALE
+// ═══════════════════════════════════════════════════════════════
+
 async function carica() {
   var risultati = await Promise.all([
     fetchTabella('impegni'),
@@ -1501,315 +2005,65 @@ async function carica() {
   _analisi      = risultati[2];
   _tooltips     = []; // reset ad ogni caricamento
 
-  // ── KPI ──
-  document.getElementById('kpiTotale').textContent = _impegni.length;
+  // ── KPI globali ──
+  document.getElementById('kpiTotale').textContent     = _impegni.length;
+  document.getElementById('kpiAperti').textContent     = _impegni.filter(function(i) { return i.stato === 'Aperto' || i.stato === 'In corso'; }).length;
+  document.getElementById('kpiRitardo').textContent    = _impegni.filter(function(i) { return i.stato === 'In ritardo'; }).length;
+  document.getElementById('kpiCompletati').textContent = _impegni.filter(function(i) { return i.stato === 'Completato'; }).length;
+  document.getElementById('kpiCamp').textContent       = _campionature.filter(function(c) { return c.stato !== 'Completata'; }).length;
+  var totFatt = _campionature.reduce(function(a, c) { return a + (parseFloat(c.fatturato_atteso) || 0); }, 0);
+  document.getElementById('kpiFatturato').textContent  = totFatt >= 1000 ? (totFatt / 1000).toFixed(0) + 'k' : totFatt.toFixed(0);
 
-  document.getElementById('kpiAperti').textContent = _impegni.filter(function(i) {
-    return i.stato === 'Aperto' || i.stato === 'In corso';
-  }).length;
-
-  document.getElementById('kpiRitardo').textContent = _impegni.filter(function(i) {
-    return i.stato === 'In ritardo';
-  }).length;
-
-  document.getElementById('kpiCompletati').textContent = _impegni.filter(function(i) {
-    return i.stato === 'Completato';
-  }).length;
-
-  document.getElementById('kpiCamp').textContent = _campionature.filter(function(c) {
-    return c.stato !== 'Completata';
-  }).length;
-
-  var totaleFatturato = _campionature.reduce(function(acc, c) {
-    return acc + (parseFloat(c.fatturato_atteso) || 0);
-  }, 0);
-  document.getElementById('kpiFatturato').textContent = totaleFatturato >= 1000
-    ? (totaleFatturato / 1000).toFixed(0) + 'k'
-    : totaleFatturato.toFixed(0);
-
-  // ── POPOLA SELECT RESPONSABILI IMPEGNI ──
+  // ── Popola select dinamici ──
   var responsabili = [];
-  _impegni.forEach(function(i) {
-    if (i.responsabile && responsabili.indexOf(i.responsabile) === -1) {
-      responsabili.push(i.responsabile);
-    }
-  });
+  _impegni.forEach(function(i) { if (i.responsabile && responsabili.indexOf(i.responsabile) === -1) responsabili.push(i.responsabile); });
   popolaSelect('filtroRespImp', responsabili);
 
-  // ── POPOLA SELECT OWNER CAMPIONATURE ──
   var owners = [];
-  _campionature.forEach(function(c) {
-    if (c.owner && owners.indexOf(c.owner) === -1) {
-      owners.push(c.owner);
-    }
-  });
+  _campionature.forEach(function(c) { if (c.owner && owners.indexOf(c.owner) === -1) owners.push(c.owner); });
   popolaSelect('filtroOwnerCamp', owners);
   popolaSelect('filtroOwnerAudit', owners);
 
-  // ── POPOLA SELECT CLASSIFICATORI ──
   var classificatori = [];
-  _campionature.forEach(function(c) {
-    if (c.classificato_da_nome && classificatori.indexOf(c.classificato_da_nome) === -1) {
-      classificatori.push(c.classificato_da_nome);
-    }
-  });
+  _campionature.forEach(function(c) { if (c.classificato_da_nome && classificatori.indexOf(c.classificato_da_nome) === -1) classificatori.push(c.classificato_da_nome); });
   popolaSelect('filtroClassificatoreCamp', classificatori);
 
-  // ── BANNER IN ATTESA CLASSIFICAZIONE ──
-  var attesa = _campionature.filter(function(c) {
-    return c.stato === 'In attesa classificazione';
-  });
+  // ── Banner campionature in attesa ──
+  var attesa = _campionature.filter(function(c) { return c.stato === 'In attesa classificazione'; });
   var banner = document.getElementById('bannerAttesa');
-  var bannerCount = document.getElementById('bannerAttesaCount');
-  if (attesa.length > 0) {
-    banner.style.display = 'flex';
-    bannerCount.textContent = attesa.length;
-  } else {
-    banner.style.display = 'none';
-  }
+  banner.style.display = attesa.length > 0 ? 'flex' : 'none';
+  document.getElementById('bannerAttesaCount').textContent = attesa.length;
 
-  // ── RENDER TABELLE ──
-  renderImpegni();
-  renderCampionature();
-  renderAnalisi();
-  renderAudit();
-
-  // ── GRAFICO: Stato impegni (ciambella) ──
-  var statiCount = {
-    'Aperto': 0, 'In corso': 0, 'Completato': 0,
-    'In ritardo': 0, 'Riprogrammato': 0
-  };
-  _impegni.forEach(function(i) {
-    if (statiCount[i.stato] !== undefined) statiCount[i.stato]++;
-  });
-  destroyChart('stato');
-  charts['stato'] = new Chart(document.getElementById('chartStato').getContext('2d'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(statiCount),
-      datasets: [{
-        data: Object.values(statiCount),
-        backgroundColor: [C.blue, C.orange, C.green, C.red, C.purple],
-        borderWidth: 2,
-        borderColor: '#fff'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'right',
-          labels: { color: C.label, font: { size: 11 }, boxWidth: 12, padding: 10 }
-        }
-      }
-    }
-  });
-
-  // ── GRAFICO: Scadenze per mese (barre) ──
-  var perMese = {};
-  _impegni.filter(function(i) { return i.scadenza; }).forEach(function(i) {
-    var m = i.scadenza.substring(0, 7);
-    perMese[m] = (perMese[m] || 0) + 1;
-  });
-  var mesiOrdinati = Object.keys(perMese).sort();
-  destroyChart('scadenze');
-  charts['scadenze'] = new Chart(document.getElementById('chartScadenze').getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: mesiOrdinati.map(function(m) {
-        return new Date(m + '-01').toLocaleDateString('it-IT', { month: 'short', year: '2-digit' });
-      }),
-      datasets: [{
-        label: 'Scadenze',
-        data: mesiOrdinati.map(function(m) { return perMese[m]; }),
-        backgroundColor: C.blueA,
-        borderRadius: 4
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: C.label, font: { size: 10 } }, grid: { color: C.grid } },
-        y: { ticks: { color: C.label, stepSize: 1, font: { size: 10 } }, grid: { color: C.grid } }
-      }
-    }
-  });
-
-  // ── GRAFICO: Trend completamenti nel tempo (linea) ──
-  var completatiPerMese = {};
-  _impegni.filter(function(i) {
-    return i.stato === 'Completato' && i.data_ultimo_aggiornamento;
-  }).forEach(function(i) {
-    var m = i.data_ultimo_aggiornamento.substring(0, 7);
-    completatiPerMese[m] = (completatiPerMese[m] || 0) + 1;
-  });
-  var mesiTrend = Object.keys(completatiPerMese).sort();
-  destroyChart('trend');
-  charts['trend'] = new Chart(document.getElementById('chartTrend').getContext('2d'), {
-    type: 'line',
-    data: {
-      labels: mesiTrend.map(function(m) {
-        return new Date(m + '-01').toLocaleDateString('it-IT', { month: 'short', year: '2-digit' });
-      }),
-      datasets: [{
-        label: 'Completati',
-        data: mesiTrend.map(function(m) { return completatiPerMese[m]; }),
-        borderColor: C.green,
-        backgroundColor: 'rgba(22,163,74,0.08)',
-        fill: true,
-        tension: 0.4,
-        pointBackgroundColor: C.green,
-        pointRadius: 4,
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: C.label, font: { size: 10 } }, grid: { color: C.grid } },
-        y: { ticks: { color: C.label, stepSize: 1, font: { size: 10 } }, grid: { color: C.grid } }
-      }
-    }
-  });
-
-  // ── BARRE: Distribuzione campionature per tipo ──
+  // ── Barre tipo campionature ──
   var tipiDef = [
     { key: 'commessa_colore',   label: 'Commessa colore',   color: C.blue },
     { key: 'commessa_prodotto', label: 'Commessa prodotto', color: C.orange },
     { key: 'progetto',          label: 'Progetto',          color: C.purple },
     { key: null,                label: 'Da classificare',   color: C.muted }
   ];
-  var conteggiTipo = {};
-  _campionature.forEach(function(c) {
-    var k = c.tipo || null;
-    conteggiTipo[k] = (conteggiTipo[k] || 0) + 1;
-  });
-  var maxTipo = Math.max.apply(null, Object.values(conteggiTipo).concat([1]));
-  var barsHtml = tipiDef.map(function(t) {
-    var n = conteggiTipo[t.key] || 0;
-    var pct = Math.round((n / maxTipo) * 100);
+  var cntTipo = {};
+  _campionature.forEach(function(c) { var k = c.tipo || null; cntTipo[k] = (cntTipo[k] || 0) + 1; });
+  var maxTipo = Math.max.apply(null, Object.values(cntTipo).concat([1]));
+  document.getElementById('tipoBars').innerHTML = tipiDef.map(function(t) {
+    var n = cntTipo[t.key] || 0;
+    var pct = Math.round(n / maxTipo * 100);
     return '<div class="tipo-bar-row">' +
-      '<div class="tipo-bar-header">' +
-      '<span class="tipo-bar-label">' + t.label + '</span>' +
-      '<span class="tipo-bar-nums">' + n + '</span>' +
-      '</div>' +
-      '<div class="tipo-bar-track">' +
-      '<div class="tipo-bar-fill" style="width:' + pct + '%;background:' + t.color + '"></div>' +
-      '</div>' +
+      '<div class="tipo-bar-header"><span class="tipo-bar-label">' + t.label + '</span><span class="tipo-bar-nums">' + n + '</span></div>' +
+      '<div class="tipo-bar-track"><div class="tipo-bar-fill" style="width:' + pct + '%;background:' + t.color + '"></div></div>' +
       '</div>';
-  }).join('');
-  document.getElementById('tipoBars').innerHTML = barsHtml || '<div class="empty">Nessun dato</div>';
+  }).join('') || '<div class="empty">Nessun dato</div>';
 
-  // ── GRAFICO: Stato campionature (ciambella) ──
-  var campStati = {
-    'In attesa classificazione': 0, 'In corso': 0,
-    'Completata': 0, 'In ritardo': 0
-  };
-  _campionature.forEach(function(c) {
-    if (campStati[c.stato] !== undefined) campStati[c.stato]++;
-  });
-  destroyChart('campStato');
-  charts['campStato'] = new Chart(document.getElementById('chartCampStato').getContext('2d'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(campStati),
-      datasets: [{
-        data: Object.values(campStati),
-        backgroundColor: [C.muted, C.orange, C.green, C.red],
-        borderWidth: 2,
-        borderColor: '#fff'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'right',
-          labels: { color: C.label, font: { size: 11 }, boxWidth: 12, padding: 10 }
-        }
-      }
-    }
-  });
+  // ── Render tabelle ──
+  renderImpegni();
+  renderSettimana();
+  renderCampionature();
+  renderAnalisi();
+  renderAudit();
 
-  // ── GRAFICO: Impegni per responsabile (barre stacked) ──
-  var perPersona = {};
-  _impegni.forEach(function(i) {
-    if (!i.responsabile) return;
-    if (!perPersona[i.responsabile]) {
-      perPersona[i.responsabile] = { completato: 0, aperto: 0, ritardo: 0 };
-    }
-    if (i.stato === 'Completato') {
-      perPersona[i.responsabile].completato++;
-    } else if (i.stato === 'In ritardo') {
-      perPersona[i.responsabile].ritardo++;
-    } else {
-      perPersona[i.responsabile].aperto++;
-    }
-  });
-  var nomi = Object.keys(perPersona);
-  destroyChart('responsabili');
-  if (nomi.length > 0) {
-    charts['responsabili'] = new Chart(document.getElementById('chartResponsabili').getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels: nomi,
-        datasets: [
-          { label: 'Completati', data: nomi.map(function(n) { return perPersona[n].completato; }), backgroundColor: C.greenA,  borderRadius: 3 },
-          { label: 'Aperti',     data: nomi.map(function(n) { return perPersona[n].aperto; }),     backgroundColor: C.blueA,   borderRadius: 3 },
-          { label: 'In ritardo', data: nomi.map(function(n) { return perPersona[n].ritardo; }),    backgroundColor: C.redA,    borderRadius: 3 }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: C.label, font: { size: 11 }, boxWidth: 12 } }
-        },
-        scales: {
-          x: { stacked: true, ticks: { color: C.label, font: { size: 11 } }, grid: { color: C.grid } },
-          y: { stacked: true, ticks: { color: C.label, font: { size: 11 }, stepSize: 1 }, grid: { color: C.grid } }
-        }
-      }
-    });
-  }
+  // ── Grafici ──
+  disegnaGrafici();
 
-  // ── SCHEDE UTENTE ──
-  document.getElementById('userGrid').innerHTML = nomi.length === 0
-    ? '<div class="empty">Nessun dato disponibile</div>'
-    : nomi.map(function(n) {
-        var p = perPersona[n];
-        var maxVal = Math.max(p.completato, p.aperto, p.ritardo, 1);
-        return '<div class="user-card">' +
-          '<div class="user-name">' +
-          '<div class="user-avatar">' + initiali(n) + '</div>' + n +
-          '</div>' +
-          '<div class="user-bars">' +
-          '<div class="user-bar-row">' +
-            '<div class="user-bar-label">Completati</div>' +
-            '<div class="user-bar-track"><div class="user-bar-fill verde" style="width:' + Math.round(p.completato / maxVal * 100) + '%"></div></div>' +
-            '<div class="user-bar-num">' + p.completato + '</div>' +
-          '</div>' +
-          '<div class="user-bar-row">' +
-            '<div class="user-bar-label">Aperti</div>' +
-            '<div class="user-bar-track"><div class="user-bar-fill blu" style="width:' + Math.round(p.aperto / maxVal * 100) + '%"></div></div>' +
-            '<div class="user-bar-num">' + p.aperto + '</div>' +
-          '</div>' +
-          '<div class="user-bar-row">' +
-            '<div class="user-bar-label">In ritardo</div>' +
-            '<div class="user-bar-track"><div class="user-bar-fill rosso" style="width:' + Math.round(p.ritardo / maxVal * 100) + '%"></div></div>' +
-            '<div class="user-bar-num">' + p.ritardo + '</div>' +
-          '</div>' +
-          '</div>' +
-          '</div>';
-      }).join('');
-
-  // ── TIMESTAMP ──
+  // ── Timestamp ──
   var now = new Date();
   document.getElementById('ultimoAgg').textContent =
     now.toLocaleDateString('it-IT') + ' ' +
@@ -1818,9 +2072,13 @@ async function carica() {
     now.toLocaleDateString('it-IT', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-// ── AVVIO ──────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// AVVIO
+// ═══════════════════════════════════════════════════════════════
+
 carica();
 setInterval(carica, 60000);
 </script>
+
 </body>
 </html>
