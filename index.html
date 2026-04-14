@@ -273,6 +273,8 @@ tr.row-urgente:hover td { background: #fef3c7; }
 .badge.in-ritardo                { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
 .badge.riprogrammato             { background: #ede9fe; color: #6d28d9; border: 1px solid #c4b5fd; }
 .badge.in-attesa-classificazione { background: #f1f2f6; color: #4b5280; border: 1px solid var(--border2); }
+.badge.stand-by                  { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; }
+.badge.bloccato                  { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; }
 
 /* ── SCADENZA CHIP ── */
 .scad-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 0.82rem; }
@@ -632,6 +634,7 @@ tr.row-urgente:hover td { background: #fef3c7; }
           <option>Completato</option>
           <option>In ritardo</option>
           <option>Riprogrammato</option>
+          <option>Stand by</option>
         </select>
         <select id="filtroRespImp" onchange="renderImpegni()">
           <option value="">Tutti i responsabili</option>
@@ -889,6 +892,15 @@ function badge(stato) {
   return '<span class="badge ' + cls + '">' + stato + '</span>';
 }
 
+// Per gli impegni: se stato è "In corso" ma la nota inizia con "BLOCCATO:"
+// mostra "Stand by" finché Apps Script non scrive direttamente stato = 'Stand by'
+function badgeImpegno(stato, note) {
+  if (stato === 'In corso' && note && note.indexOf('BLOCCATO:') === 0) {
+    return '<span class="badge stand-by">Stand by</span>';
+  }
+  return badge(stato);
+}
+
 function dataIT(d) {
   if (!d) return '—';
   return new Date(d).toLocaleDateString('it-IT', {
@@ -1098,7 +1110,10 @@ function renderImpegni() {
     var matchCerca = !cerca ||
       (i.descrizione || '').toLowerCase().indexOf(cerca) !== -1 ||
       (i.codice || '').toLowerCase().indexOf(cerca) !== -1;
-    var matchStato = !filtroStato || i.stato === filtroStato;
+    var statoEffettivo = (i.stato === 'In corso' && i.note && i.note.indexOf('BLOCCATO:') === 0)
+      ? 'Stand by'
+      : i.stato;
+    var matchStato = !filtroStato || statoEffettivo === filtroStato;
     var matchResp  = !filtroResp  || i.responsabile === filtroResp;
 
     var matchPeriodo = true;
@@ -1155,7 +1170,7 @@ function renderImpegni() {
       '<td style="color:var(--text);font-weight:500">' + (i.descrizione || '—') + '</td>' +
       '<td>' + (i.responsabile || '—') + '</td>' +
       '<td>' + scadenzaChip(i.scadenza, i.scadenza_stimata, i.stato) + '</td>' +
-      '<td>' + badge(i.stato) + '</td>' +
+      '<td>' + badgeImpegno(i.stato, i.note) + '</td>' +
       '<td style="color:var(--muted);font-size:0.78rem;max-width:220px">' + (i.note || '—') + '</td>' +
       '</tr>';
   });
