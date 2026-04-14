@@ -533,7 +533,45 @@ tr.row-urgente:hover td { background: #fef3c7; }
 </style>
 </head>
 <body>
-
+<!-- SHAQ AUTH -->
+<div id="authWall" style="
+  position:fixed; inset:0; background:#0e0f14;
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999; flex-direction:column; gap:16px;">
+  <div style="font-family:monospace; font-size:1.2rem; color:#e8c547; font-weight:bold;">SHAQ</div>
+  <div style="font-size:0.85rem; color:#6b7080;">Accesso riservato — Colsam Industria</div>
+  <input id="authInput" type="password" placeholder="Password"
+    style="padding:10px 16px; border-radius:6px; border:1px solid #2a2d38;
+    background:#16181f; color:#e8eaf0; font-size:0.9rem; width:220px; outline:none;"
+    onkeydown="if(event.key==='Enter') checkAuth()">
+  <button onclick="checkAuth()"
+    style="padding:8px 24px; background:#e8c547; color:#000; border:none;
+    border-radius:6px; font-weight:bold; cursor:pointer; font-size:0.9rem;">
+    Accedi
+  </button>
+  <div id="authError" style="color:#f75555; font-size:0.8rem; display:none;">
+    Password non corretta
+  </div>
+</div>
+<script>
+  // Cambia questa password con una a tua scelta
+  var SHAQ_PWD = 'Colsam0426';
+  function checkAuth() {
+    var input = document.getElementById('authInput').value;
+    if (input === SHAQ_PWD) {
+      document.getElementById('authWall').style.display = 'none';
+      sessionStorage.setItem('shaq_auth', '1');
+    } else {
+      document.getElementById('authError').style.display = 'block';
+      document.getElementById('authInput').value = '';
+    }
+  }
+  // Se già autenticato in questa sessione, non mostrare il wall
+  if (sessionStorage.getItem('shaq_auth') === '1') {
+    document.getElementById('authWall').style.display = 'none';
+  }
+</script>
+<!-- END SHAQ AUTH -->  
 <header>
   <div class="logo">
     <div class="logo-badge">SHAQ</div>
