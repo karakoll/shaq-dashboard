@@ -763,6 +763,9 @@ function kpiClick(tipo){
   if(tipo==='totale'){
     attivaTab('impegni');
     resetFiltriImpegni();
+    mostraCompletati=true;
+    aggiornaToggleCompletati();
+    renderImpegni();
   } else if(tipo==='aperti'){
     attivaTab('impegni');
     resetFiltriImpegni();
