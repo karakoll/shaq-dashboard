@@ -395,6 +395,7 @@ tr.row-silente:hover td{background:#ede9fe;}
     <button class="tab"        data-tab="analisi"    onclick="switchTab('analisi',this)">Analisi comparative</button>
     <button class="tab"        data-tab="kb"         onclick="switchTab('kb',this)">Knowledge Base</button>
     <button class="tab"        data-tab="performance" onclick="switchTab('performance',this)">Performance</button>
+    <button class="tab"        data-tab="audit-trail" onclick="switchTab('audit-trail',this)">Audit Trail</button>
   </div>
 
   <!-- ══ TAB IMPEGNI ════════════════════════════════════════════ -->
@@ -597,7 +598,36 @@ tr.row-silente:hover td{background:#ede9fe;}
     </div>
   </div>
 
-  <div class="ultimo-agg">Ultimo aggiornamento: <span id="ultimoAgg">—</span> &nbsp;&#183;&nbsp; Aggiornamento automatico ogni 60s</div>
+  <!-- ══ TAB AUDIT TRAIL ══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-audit-trail">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Audit Trail</div>
+      <div class="card-actions"><div class="card-count" id="countAuditTrail">—</div></div>
+    </div>
+    <div class="filtri-row" style="margin-bottom:14px">
+      <input type="text" id="cercaAuditRecord" placeholder="Cerca record (IMP-, CAM-)..." oninput="renderAuditTrail()">
+      <select id="filtroAuditTabella" onchange="renderAuditTrail()">
+        <option value="">Tutte le tabelle</option>
+        <option>impegni</option>
+        <option>campionature</option>
+      </select>
+      <select id="filtroAuditOp" onchange="renderAuditTrail()">
+        <option value="">Tutte le operazioni</option>
+        <option>INSERT</option>
+        <option>UPDATE</option>
+      </select>
+      <select id="filtroAuditFlusso" onchange="renderAuditTrail()">
+        <option value="">Tutti i flussi</option>
+        <option>verbale</option>
+        <option>campionatura</option>
+        <option>impegno</option>
+      </select>
+      <button class="btn-reset" onclick="resetFiltriAuditTrail()">&#10005; Reset</button>
+    </div>
+    <div class="table-wrap"><div id="tabellaAuditTrail"><div class="empty">Caricamento...</div></div></div>
+  </div>
+</div>
 
 </div><!-- /container -->
 
@@ -694,7 +724,7 @@ function doLogin(){
 // ══ STATO GLOBALE ═════════════════════════════════════════════
 var C={blue:'#2563eb',blueA:'rgba(37,99,235,0.7)',green:'#16a34a',greenA:'rgba(22,163,74,0.7)',red:'#dc2626',redA:'rgba(220,38,38,0.7)',orange:'#d97706',orangeA:'rgba(217,119,6,0.7)',purple:'#7c3aed',muted:'#636882',grid:'#e5e7ef',label:'#636882'};
 var charts={};
-var _impegni=[],_campionature=[],_analisi=[],_documenti=[],_tooltips=[];
+var _impegni=[],_campionature=[],_analisi=[],_documenti=[],_tooltips=[],_auditTrail=[];
 var sortImp={col:'scadenza',dir:1},sortCamp={col:null,dir:1};
 var mostraCompletati=false; // default: completati nascosti
 
@@ -1120,13 +1150,85 @@ function disegnaGrafici(){
   document.getElementById('userGrid').innerHTML=nomi.length===0?'<div class="empty">Nessun dato disponibile</div>':nomi.map(function(n){var p=perPersona[n];var mx=Math.max(p.completato,p.aperto,p.ritardo,1);return'<div class="user-card" onclick="apriModalImp(\''+n.replace(/'/g,"&#39;")+'\')">'+'<div class="user-name"><div class="user-avatar">'+initiali(n)+'</div>'+n+'</div>'+'<div class="user-bars">'+'<div class="user-bar-row"><div class="user-bar-label">Completati</div><div class="user-bar-track"><div class="user-bar-fill verde" style="width:'+Math.round(p.completato/mx*100)+'%"></div></div><div class="user-bar-num">'+p.completato+'</div></div>'+'<div class="user-bar-row"><div class="user-bar-label">Aperti</div><div class="user-bar-track"><div class="user-bar-fill blu" style="width:'+Math.round(p.aperto/mx*100)+'%"></div></div><div class="user-bar-num">'+p.aperto+'</div></div>'+'<div class="user-bar-row"><div class="user-bar-label">In ritardo</div><div class="user-bar-track"><div class="user-bar-fill rosso" style="width:'+Math.round(p.ritardo/mx*100)+'%"></div></div><div class="user-bar-num">'+p.ritardo+'</div></div>'+'</div></div>';}).join('');
 }
 
+// ══ AUDIT TRAIL ══════════════════════════════════════════════
+
+function escHtml(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderAuditTrail(){
+  var cerca=(document.getElementById('cercaAuditRecord').value||'').toLowerCase();
+  var filtTabella=document.getElementById('filtroAuditTabella').value;
+  var filtOp=document.getElementById('filtroAuditOp').value;
+  var filtFlusso=document.getElementById('filtroAuditFlusso').value;
+
+  var filtrati=_auditTrail.filter(function(r){
+    if(cerca&&r.record_id&&r.record_id.toLowerCase().indexOf(cerca)===-1)return false;
+    if(filtTabella&&r.tabella!==filtTabella)return false;
+    if(filtOp&&r.operazione!==filtOp)return false;
+    if(filtFlusso&&r.flusso!==filtFlusso)return false;
+    return true;
+  });
+
+  filtrati.sort(function(a,b){return new Date(b.ts)-new Date(a.ts);});
+
+  document.getElementById('countAuditTrail').textContent=filtrati.length;
+
+  if(filtrati.length===0){
+    document.getElementById('tabellaAuditTrail').innerHTML='<div class="empty">Nessun evento registrato</div>';
+    return;
+  }
+
+  var html='<table><thead><tr>'+
+    '<th>Timestamp</th><th>Record</th><th>Tabella</th><th>Op.</th>'+
+    '<th>Campo</th><th>Prima</th><th>Dopo</th>'+
+    '<th>Attore</th><th>Flusso</th><th>Note</th>'+
+    '</tr></thead><tbody>';
+
+  filtrati.forEach(function(r){
+    var ts=r.ts?new Date(r.ts).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    var opBadge=r.operazione==='INSERT'
+      ?'<span class="badge aperto">INSERT</span>'
+      :'<span class="badge in-corso">UPDATE</span>';
+    var prima=r.valore_prima
+      ?'<span style="font-family:\'DM Mono\',monospace;font-size:0.74rem;color:var(--red)">'+escHtml(r.valore_prima.substring(0,80))+'</span>'
+      :'—';
+    var dopo=r.valore_dopo
+      ?'<span style="font-family:\'DM Mono\',monospace;font-size:0.74rem;color:var(--green)">'+escHtml(r.valore_dopo.substring(0,80))+'</span>'
+      :'—';
+    html+='<tr>'
+      +'<td style="font-family:\'DM Mono\',monospace;font-size:0.74rem;white-space:nowrap">'+ts+'</td>'
+      +'<td><span style="font-family:\'DM Mono\',monospace;font-size:0.78rem;font-weight:600">'+escHtml(r.record_id||'—')+'</span></td>'
+      +'<td style="font-size:0.78rem">'+escHtml(r.tabella||'—')+'</td>'
+      +'<td>'+opBadge+'</td>'
+      +'<td style="font-family:\'DM Mono\',monospace;font-size:0.78rem">'+escHtml(r.campo||'—')+'</td>'
+      +'<td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+prima+'</td>'
+      +'<td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+dopo+'</td>'
+      +'<td style="font-size:0.76rem">'+escHtml(r.attore_email||'—')+'</td>'
+      +'<td style="font-size:0.76rem">'+escHtml(r.flusso||'—')+'</td>'
+      +'<td style="font-size:0.74rem;color:var(--muted)">'+escHtml(r.note||'')+'</td>'
+      +'</tr>';
+  });
+
+  html+='</tbody></table>';
+  document.getElementById('tabellaAuditTrail').innerHTML=html;
+}
+
+function resetFiltriAuditTrail(){
+  document.getElementById('cercaAuditRecord').value='';
+  document.getElementById('filtroAuditTabella').value='';
+  document.getElementById('filtroAuditOp').value='';
+  document.getElementById('filtroAuditFlusso').value='';
+  renderAuditTrail();
+}
+
+
+  
 // ══ CARICAMENTO ══════════════════════════════════════════════
 async function carica(){
   // Non caricare se non autenticato
   if(sessionStorage.getItem('shaq_auth')!=='ok') return;
 
-  var risultati=await Promise.all([fetchTabella('impegni'),fetchTabella('campionature'),fetchTabella('analisi_comparative'),fetchTabella('documenti')]);
-  _impegni=risultati[0];_campionature=risultati[1];_analisi=risultati[2];_documenti=risultati[3];_tooltips=[];
+  var risultati=await Promise.all([fetchTabella('impegni'),fetchTabella('campionature'),fetchTabella('analisi_comparative'),fetchTabella('documenti'),fetchTabella('audit_log')]);
+  _impegni=risultati[0];_campionature=risultati[1];_analisi=risultati[2];_documenti=risultati[3];_auditTrail=risultati[4]||[];_tooltips=[];
 
   document.getElementById('kpiTotale').textContent=_impegni.length;
   document.getElementById('kpiAperti').textContent=_impegni.filter(function(i){return i.stato==='Aperto'||i.stato==='In corso';}).length;
@@ -1155,7 +1257,7 @@ async function carica(){
   var maxTipo=Math.max.apply(null,Object.values(cntTipo).concat([1]));
   document.getElementById('tipoBars').innerHTML=tipiDef.map(function(t){var n=cntTipo[t.key]||0;var pct=Math.round(n/maxTipo*100);return'<div class="tipo-bar-row"><div class="tipo-bar-header"><span class="tipo-bar-label">'+t.label+'</span><span class="tipo-bar-nums">'+n+'</span></div><div class="tipo-bar-track"><div class="tipo-bar-fill" style="width:'+pct+'%;background:'+t.color+'"></div></div></div>';}).join('')||'<div class="empty">Nessun dato</div>';
 
-  renderImpegni();renderSettimana();renderCampionature();renderAnalisi();renderAudit();renderDocumenti();disegnaGrafici();
+  renderImpegni();renderSettimana();renderCampionature();renderAnalisi();renderAudit();renderDocumenti();renderAuditTrail();disegnaGrafici();
 
   var now=new Date();
   document.getElementById('ultimoAgg').textContent=now.toLocaleDateString('it-IT')+' '+now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
