@@ -71,7 +71,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 
 /* ── KPI ── */
-.kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:24px;}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:24px;}
 .kpi{
   background:var(--surface);border:1px solid var(--border);border-radius:10px;
   padding:18px 16px 16px;position:relative;overflow:hidden;
@@ -88,7 +88,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .kpi.giallo::before{background:var(--orange);}
 .kpi.viola::before{background:var(--purple);}
 .kpi.teal::before{background:var(--teal);}
-.kpi.kb::before{background:#0891b2;}
 .kpi .numero{font-family:'DM Mono',monospace;font-size:2.2rem;font-weight:500;line-height:1;margin-bottom:7px;}
 .kpi.blu .numero{color:var(--blue);}
 .kpi.verde .numero{color:var(--green);}
@@ -96,7 +95,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .kpi.giallo .numero{color:var(--orange);}
 .kpi.viola .numero{color:var(--purple);}
 .kpi.teal .numero{color:var(--teal);}
-.kpi.kb .numero{color:#0891b2;}
 .kpi .etichetta{font-size:0.72rem;color:var(--muted);font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
 
 /* ── CARD ── */
@@ -169,16 +167,6 @@ tr.row-silente:hover td{background:#ede9fe;}
 .badge.stand-by,.badge.bloccato{background:#fff7ed;color:#9a3412;border:1px solid #fdba74;}
 .badge.incompleta{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
 
-/* ── KB TAG ── */
-.kb-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.69rem;font-weight:700;font-family:'DM Mono',monospace;white-space:nowrap;}
-.kb-tds{background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd;}
-.kb-sds{background:#dcfce7;color:#15803d;border:1px solid #86efac;}
-.kb-normativa{background:#ede9fe;color:#6d28d9;border:1px solid #c4b5fd;}
-.kb-competitor{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;}
-.kb-procedura{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
-.kb-listino{background:#f1f2f6;color:#4b5280;border:1px solid #d8dce6;}
-.kb-verbale{background:#f0fdf4;color:#166534;border:1px solid #86efac;}
-.kb-default{background:#f1f2f6;color:#4b5280;border:1px solid #d8dce6;}
 
 /* ── SCADENZA ── */
 .scad-chip{display:inline-flex;align-items:center;gap:5px;font-size:0.82rem;}
@@ -280,7 +268,6 @@ tr.row-silente:hover td{background:#ede9fe;}
 
 /* ── TOOLTIP ── */
 #globalTooltip{display:none;position:fixed;z-index:9999;min-width:260px;max-width:360px;background:#ffffff;border:1px solid #d8dce6;border-radius:9px;padding:13px 15px;font-size:0.79rem;color:#1a1d2e;box-shadow:0 8px 28px rgba(0,0,0,0.13);pointer-events:none;line-height:1.65;font-family:'DM Sans',sans-serif;}
-.estratto-kb{font-size:0.78rem;color:var(--muted);max-width:260px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .empty{text-align:center;padding:36px;color:var(--muted);font-size:0.85rem;}
 .ultimo-agg{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:20px;text-align:right;padding-top:12px;border-top:1px solid var(--border);}
 .ultimo-agg span{color:var(--green);font-weight:600;}
@@ -381,10 +368,7 @@ tr.row-silente:hover td{background:#ede9fe;}
       <div class="numero" id="kpiFatturato">—</div>
       <div class="etichetta">Fatturato atteso (k€)</div>
     </div>
-    <div class="kpi kb"     onclick="kpiClick('docs')"       title="Vai alla Knowledge Base">
-      <div class="numero" id="kpiDocs">—</div>
-      <div class="etichetta">Documenti KB</div>
-    </div>
+    
   </div>
 
   <!-- ══ TAB NAV ════════════════════════════════════════════════ -->
@@ -392,8 +376,6 @@ tr.row-silente:hover td{background:#ede9fe;}
     <button class="tab active" data-tab="impegni"    onclick="switchTab('impegni',this)">Impegni</button>
     <button class="tab"        data-tab="settimana"  onclick="switchTab('settimana',this)">Questa settimana</button>
     <button class="tab"        data-tab="campionature" onclick="switchTab('campionature',this)">Campionature</button>
-    <button class="tab"        data-tab="analisi"    onclick="switchTab('analisi',this)">Analisi comparative</button>
-    <button class="tab"        data-tab="kb"         onclick="switchTab('kb',this)">Knowledge Base</button>
     <button class="tab"        data-tab="performance" onclick="switchTab('performance',this)">Performance</button>
     <button class="tab"        data-tab="audit-trail" onclick="switchTab('audit-trail',this)">Audit Trail</button>
   </div>
@@ -542,47 +524,9 @@ tr.row-silente:hover td{background:#ede9fe;}
     </div>
   </div>
 
-  <!-- ══ TAB ANALISI ════════════════════════════════════════════ -->
-  <div class="tab-content" id="tab-analisi">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Analisi comparative</div>
-        <div class="card-count" id="countAnalisi">—</div>
-      </div>
-      <div class="filtri-row" style="margin-bottom:14px">
-        <input type="text" id="cercaAnalisi" placeholder="Cerca prodotto o produttore..." oninput="renderAnalisi()">
-        <select id="filtroStatoAnalisi" onchange="renderAnalisi()">
-          <option value="">Tutti gli stati</option>
-          <option>Aperta</option><option>Chiusa</option><option>Incompleta</option>
-        </select>
-        <button class="btn-reset" onclick="resetFiltriAnalisi()">&#10005; Reset</button>
-      </div>
-      <div class="table-wrap"><div id="tabellaAnalisi"><div class="empty">Caricamento...</div></div></div>
-    </div>
-  </div>
+  
 
-  <!-- ══ TAB KNOWLEDGE BASE ═════════════════════════════════════ -->
-  <div class="tab-content" id="tab-kb">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Indice Knowledge Base</div>
-        <div class="card-count" id="countDocs">—</div>
-      </div>
-      <div class="filtri-row" style="margin-bottom:14px">
-        <input type="text" id="cercaDocs" placeholder="Cerca prodotto, brand, area tematica..." oninput="renderDocumenti()">
-        <select id="filtroTipoDocs" onchange="renderDocumenti()">
-          <option value="">Tutti i tipi</option>
-          <option>TDS</option><option>SDS</option><option>Normativa</option>
-          <option>Competitor</option><option>Procedura</option>
-          <option>Listino</option><option>Verbale</option>
-        </select>
-        <select id="filtroAreaDocs" onchange="renderDocumenti()"><option value="">Tutte le aree</option></select>
-        <button class="btn-reset" onclick="resetFiltriDocs()">&#10005; Reset</button>
-      </div>
-      <div class="table-wrap"><div id="tabellaDocumenti"><div class="empty">Nessun documento indicizzato</div></div></div>
-    </div>
-  </div>
-
+  
   <!-- ══ TAB PERFORMANCE ════════════════════════════════════════ -->
   <div class="tab-content" id="tab-performance">
     <div class="card" style="margin-bottom:16px">
@@ -724,7 +668,7 @@ function doLogin(){
 // ══ STATO GLOBALE ═════════════════════════════════════════════
 var C={blue:'#2563eb',blueA:'rgba(37,99,235,0.7)',green:'#16a34a',greenA:'rgba(22,163,74,0.7)',red:'#dc2626',redA:'rgba(220,38,38,0.7)',orange:'#d97706',orangeA:'rgba(217,119,6,0.7)',purple:'#7c3aed',muted:'#636882',grid:'#e5e7ef',label:'#636882'};
 var charts={};
-var _impegni=[],_campionature=[],_analisi=[],_documenti=[],_tooltips=[],_auditTrail=[];
+var _impegni=[],_campionature=[],_tooltips=[],_auditTrail=[];
 var sortImp={col:'scadenza',dir:1},sortCamp={col:null,dir:1};
 var mostraCompletati=false; // default: completati nascosti
 
@@ -755,7 +699,6 @@ function scadenzaChip(dataStr,stimata,stato){
 }
 function rowClass(item){if(!item.scadenza)return'';if(item.stato==='Completato'||item.stato==='Completata')return'';var gg=giorniAllaScadenza(item.scadenza);if(item.stato==='In ritardo'||gg<0)return'row-ritardo';if(gg<=3)return'row-urgente';return'';}
 function ggApertiChip(item){if(item.stato==='Completato'||item.stato==='Completata')return'';var gg=giorniAperti(item);if(gg===null||gg<=0)return'';var cls=gg>21?'gg-aperti lungo':'gg-aperti';return'<span class="'+cls+'">'+gg+'gg</span>';}
-function kbTagEl(tipo){if(!tipo)return'—';var map={TDS:'kb-tds',SDS:'kb-sds',Normativa:'kb-normativa',Competitor:'kb-competitor',Procedura:'kb-procedura',Listino:'kb-listino',Verbale:'kb-verbale'};var cls=map[tipo]||'kb-default';return'<span class="kb-tag '+cls+'">'+tipo+'</span>';}
 
 // ══ TOOLTIP ══════════════════════════════════════════════════
 var tt=document.getElementById('globalTooltip');
@@ -814,9 +757,7 @@ function kpiClick(tipo){
     renderImpegni();
   } else if(tipo==='camp'||tipo==='fatturato'){
     attivaTab('campionature');
-  } else if(tipo==='docs'){
-    attivaTab('kb');
-  }
+  
 }
 
 // ══ TOGGLE COMPLETATI ════════════════════════════════════════
@@ -994,46 +935,8 @@ function renderAudit(){
 }
 function resetFiltriAudit(){document.getElementById('filtroStatoAudit').value='';document.getElementById('filtroOwnerAudit').value='';renderAudit();}
 
-// ══ RENDER ANALISI ═══════════════════════════════════════════
-function renderAnalisi(){
-  var cerca=document.getElementById('cercaAnalisi').value.toLowerCase();
-  var filtroStato=document.getElementById('filtroStatoAnalisi').value;
-  var lista=_analisi.filter(function(a){var matchCerca=!cerca||(a.prodotto_concorrente||'').toLowerCase().indexOf(cerca)!==-1||(a.produttore||'').toLowerCase().indexOf(cerca)!==-1;return matchCerca&&(!filtroStato||a.stato===filtroStato);});
-  document.getElementById('countAnalisi').textContent=lista.length+' / '+_analisi.length;
-  if(lista.length===0){document.getElementById('tabellaAnalisi').innerHTML='<div class="empty">Nessun risultato</div>';return;}
-  var html='<table><thead><tr><th>Codice</th><th>Prodotto concorrente</th><th>Produttore</th><th>Agente</th><th>Cliente</th><th>Data</th><th>Stato</th></tr></thead><tbody>';
-  lista.forEach(function(a){
-    var tipHtml=ttRow('Codice',a.codice)+ttRow('Prodotto',a.prodotto_concorrente)+ttRow('Produttore',a.produttore)+ttRow('Agente',a.agente_richiedente)+ttRow('Cliente',a.cliente_coinvolto)+ttRow('Apertura',dataIT(a.data_apertura))+ttRow('Chiusura',dataIT(a.data_chiusura))+ttRow('Nota tecnica',a.nota_tecnica);
-    var idx=regTooltip(tipHtml);
-    html+='<tr onmouseenter="mostraTooltip(event,'+idx+')" onmouseleave="nascondiTooltip()">'+'<td><span class="codice">'+(a.codice||'—')+'</span></td>'+'<td style="color:var(--text);font-weight:500">'+(a.prodotto_concorrente||'—')+'</td>'+'<td>'+(a.produttore||'—')+'</td><td>'+(a.agente_richiedente||'—')+'</td><td>'+(a.cliente_coinvolto||'—')+'</td>'+'<td style="font-size:0.78rem;white-space:nowrap">'+dataIT(a.data_apertura)+'</td>'+'<td>'+badge(a.stato)+'</td></tr>';
-  });
-  html+='</tbody></table>';document.getElementById('tabellaAnalisi').innerHTML=html;
-}
-function resetFiltriAnalisi(){document.getElementById('cercaAnalisi').value='';document.getElementById('filtroStatoAnalisi').value='';renderAnalisi();}
 
-// ══ RENDER DOCUMENTI ═════════════════════════════════════════
-function renderDocumenti(){
-  var cerca=document.getElementById('cercaDocs').value.toLowerCase();
-  var filtroTipo=document.getElementById('filtroTipoDocs').value;
-  var filtroArea=document.getElementById('filtroAreaDocs').value;
-  var lista=_documenti.filter(function(d){
-    var matchCerca=!cerca||(d.prodotto||'').toLowerCase().indexOf(cerca)!==-1||(d.brand_produttore||'').toLowerCase().indexOf(cerca)!==-1||(d.area_tematica||'').toLowerCase().indexOf(cerca)!==-1||(d.fonte||'').toLowerCase().indexOf(cerca)!==-1;
-    var matchTipo=!filtroTipo||d.tipo===filtroTipo;
-    var matchArea=!filtroArea||(d.area_tematica||'')===filtroArea;
-    return matchCerca&&matchTipo&&matchArea;
-  });
-  document.getElementById('countDocs').textContent=lista.length+' / '+_documenti.length;
-  if(lista.length===0){document.getElementById('tabellaDocumenti').innerHTML='<div class="empty">Nessun documento trovato</div>';return;}
-  var html='<table><thead><tr><th>Tipo</th><th>Prodotto</th><th>Brand / Produttore</th><th>Versione</th><th>Area tematica</th><th>Fonte</th><th>Data doc.</th><th>Indicizzato il</th><th>Estratto</th></tr></thead><tbody>';
-  lista.forEach(function(d){
-    var estratto=d.estratto_testuale?(d.estratto_testuale.length>120?d.estratto_testuale.substring(0,120)+'...':d.estratto_testuale):'—';
-    var tipHtml=ttRow('Tipo',d.tipo)+ttRow('Prodotto',d.prodotto)+ttRow('Brand/Produttore',d.brand_produttore)+ttRow('Versione',d.versione)+ttRow('Area tematica',d.area_tematica)+ttRow('Fonte',d.fonte)+ttRow('Data documento',dataIT(d.data_documento))+ttRow('Indicizzato il',dataIT(d.data_indicizzazione))+ttRow('File ID Drive',d.file_id_drive)+'<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e5e7ef;font-size:0.77rem;color:#636882;line-height:1.5">'+(d.estratto_testuale||'—').substring(0,300)+'</div>';
-    var idx=regTooltip(tipHtml);
-    html+='<tr onmouseenter="mostraTooltip(event,'+idx+')" onmouseleave="nascondiTooltip()">'+'<td>'+kbTagEl(d.tipo)+'</td>'+'<td style="font-weight:500;color:var(--text)">'+(d.prodotto||'—')+'</td>'+'<td>'+(d.brand_produttore||'—')+'</td>'+'<td style="font-size:0.76rem;color:var(--muted)">'+(d.versione||'—')+'</td>'+'<td style="font-size:0.76rem;color:var(--muted)">'+(d.area_tematica||'—')+'</td>'+'<td style="font-size:0.76rem;color:var(--muted)">'+(d.fonte||'—')+'</td>'+'<td style="font-size:0.78rem;white-space:nowrap">'+dataIT(d.data_documento)+'</td>'+'<td style="font-size:0.78rem;white-space:nowrap;color:var(--muted)">'+dataIT(d.data_indicizzazione)+'</td>'+'<td><div class="estratto-kb">'+estratto+'</div></td></tr>';
-  });
-  html+='</tbody></table>';document.getElementById('tabellaDocumenti').innerHTML=html;
-}
-function resetFiltriDocs(){document.getElementById('cercaDocs').value='';document.getElementById('filtroTipoDocs').value='';document.getElementById('filtroAreaDocs').value='';renderDocumenti();}
+
 
 // ══ MODAL IMPEGNI ════════════════════════════════════════════
 var _modalImpNome='';
@@ -1224,11 +1127,10 @@ function resetFiltriAuditTrail(){
   
 // ══ CARICAMENTO ══════════════════════════════════════════════
 async function carica(){
-  // Non caricare se non autenticato
   if(sessionStorage.getItem('shaq_auth')!=='ok') return;
 
-  var risultati=await Promise.all([fetchTabella('impegni'),fetchTabella('campionature'),fetchTabella('analisi_comparative'),fetchTabella('documenti'),fetchTabella('audit_log')]);
-  _impegni=risultati[0];_campionature=risultati[1];_analisi=risultati[2];_documenti=risultati[3];_auditTrail=risultati[4]||[];_tooltips=[];
+  var risultati=await Promise.all([fetchTabella('impegni'),fetchTabella('campionature'),fetchTabella('audit_log')]);
+  _impegni=risultati[0];_campionature=risultati[1];_auditTrail=risultati[2]||[];_tooltips=[];
 
   document.getElementById('kpiTotale').textContent=_impegni.length;
   document.getElementById('kpiAperti').textContent=_impegni.filter(function(i){return i.stato==='Aperto'||i.stato==='In corso';}).length;
@@ -1237,7 +1139,6 @@ async function carica(){
   document.getElementById('kpiCamp').textContent=_campionature.filter(function(c){return c.stato!=='Completata';}).length;
   var totFatt=_campionature.reduce(function(a,c){return a+(parseFloat(c.fatturato_atteso)||0);},0);
   document.getElementById('kpiFatturato').textContent=totFatt>=1000?(totFatt/1000).toFixed(0)+'k':totFatt.toFixed(0);
-  document.getElementById('kpiDocs').textContent=_documenti.length;
 
   var responsabili=[];_impegni.forEach(function(i){if(i.responsabile&&responsabili.indexOf(i.responsabile)===-1)responsabili.push(i.responsabile);});
   popolaSelect('filtroRespImp',responsabili);
@@ -1245,8 +1146,6 @@ async function carica(){
   popolaSelect('filtroOwnerCamp',owners);popolaSelect('filtroOwnerAudit',owners);
   var classificatori=[];_campionature.forEach(function(c){if(c.classificato_da_nome&&classificatori.indexOf(c.classificato_da_nome)===-1)classificatori.push(c.classificato_da_nome);});
   popolaSelect('filtroClassificatoreCamp',classificatori);
-  var aree=[];_documenti.forEach(function(d){if(d.area_tematica&&aree.indexOf(d.area_tematica)===-1)aree.push(d.area_tematica);});
-  popolaSelect('filtroAreaDocs',aree);
 
   var attesa=_campionature.filter(function(c){return c.stato==='In attesa classificazione';});
   var banner=document.getElementById('bannerAttesa');banner.style.display=attesa.length>0?'flex':'none';
@@ -1257,7 +1156,7 @@ async function carica(){
   var maxTipo=Math.max.apply(null,Object.values(cntTipo).concat([1]));
   document.getElementById('tipoBars').innerHTML=tipiDef.map(function(t){var n=cntTipo[t.key]||0;var pct=Math.round(n/maxTipo*100);return'<div class="tipo-bar-row"><div class="tipo-bar-header"><span class="tipo-bar-label">'+t.label+'</span><span class="tipo-bar-nums">'+n+'</span></div><div class="tipo-bar-track"><div class="tipo-bar-fill" style="width:'+pct+'%;background:'+t.color+'"></div></div></div>';}).join('')||'<div class="empty">Nessun dato</div>';
 
-  renderImpegni();renderSettimana();renderCampionature();renderAnalisi();renderAudit();renderDocumenti();renderAuditTrail();disegnaGrafici();
+  renderImpegni();renderSettimana();renderCampionature();renderAuditTrail();disegnaGrafici();
 
   var now=new Date();
   document.getElementById('ultimoAgg').textContent=now.toLocaleDateString('it-IT')+' '+now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
