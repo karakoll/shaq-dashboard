@@ -1149,19 +1149,17 @@ function resetFiltriVerbali(){
 // ══ CARICAMENTO ══════════════════════════════════════════════
 async function carica(){
   if(sessionStorage.getItem('shaq_auth')!=='ok') return;
-
-  var risultati=await Promise.all([
+  var risultati = await Promise.all([
     fetchTabella('impegni'),
     fetchTabella('campionature'),
     fetchTabella('audit_log'),
-    fetchTabella('verbali_bozza')
+    fetchTabella('verbali_bozza').catch(function(){ return []; })
   ]);
   _impegni=risultati[0];
   _campionature=risultati[1];
   _auditTrail=risultati[2]||[];
   _verbali=risultati[3]||[];
   _tooltips=[];
-
   document.getElementById('kpiTotale').textContent=_impegni.length;
   document.getElementById('kpiAperti').textContent=_impegni.filter(function(i){return i.stato==='Aperto'||i.stato==='In corso';}).length;
   document.getElementById('kpiRitardo').textContent=_impegni.filter(function(i){return i.stato==='In ritardo';}).length;
@@ -1170,25 +1168,20 @@ async function carica(){
   var totFatt=_campionature.reduce(function(a,c){return a+(parseFloat(c.fatturato_atteso)||0);},0);
   document.getElementById('kpiFatturato').textContent=totFatt>=1000?(totFatt/1000).toFixed(0)+'k':totFatt.toFixed(0);
   document.getElementById('kpiVerbali').textContent=_verbali.filter(function(v){return v.stato==='bozza';}).length;
-
   var responsabili=[];_impegni.forEach(function(i){if(i.responsabile&&responsabili.indexOf(i.responsabile)===-1)responsabili.push(i.responsabile);});
   popolaSelect('filtroRespImp',responsabili);
   var owners=[];_campionature.forEach(function(c){if(c.owner&&owners.indexOf(c.owner)===-1)owners.push(c.owner);});
   popolaSelect('filtroOwnerCamp',owners);popolaSelect('filtroOwnerAudit',owners);
   var classificatori=[];_campionature.forEach(function(c){if(c.classificato_da_nome&&classificatori.indexOf(c.classificato_da_nome)===-1)classificatori.push(c.classificato_da_nome);});
   popolaSelect('filtroClassificatoreCamp',classificatori);
-
   var attesa=_campionature.filter(function(c){return c.stato==='In attesa classificazione';});
   var banner=document.getElementById('bannerAttesa');banner.style.display=attesa.length>0?'flex':'none';
   document.getElementById('bannerAttesaCount').textContent=attesa.length;
-
   var tipiDef=[{key:'commessa_colore',label:'Commessa colore',color:C.blue},{key:'commessa_prodotto',label:'Commessa prodotto',color:C.orange},{key:'progetto',label:'Progetto',color:C.purple},{key:null,label:'Da classificare',color:C.muted}];
   var cntTipo={};_campionature.forEach(function(c){var k=c.tipo||null;cntTipo[k]=(cntTipo[k]||0)+1;});
   var maxTipo=Math.max.apply(null,Object.values(cntTipo).concat([1]));
   document.getElementById('tipoBars').innerHTML=tipiDef.map(function(t){var n=cntTipo[t.key]||0;var pct=Math.round(n/maxTipo*100);return'<div class="tipo-bar-row"><div class="tipo-bar-header"><span class="tipo-bar-label">'+t.label+'</span><span class="tipo-bar-nums">'+n+'</span></div><div class="tipo-bar-track"><div class="tipo-bar-fill" style="width:'+pct+'%;background:'+t.color+'"></div></div></div>';}).join('')||'<div class="empty">Nessun dato</div>';
-
   renderImpegni();renderSettimana();renderCampionature();renderAuditTrail();renderVerbali();disegnaGrafici();
-
   var now=new Date();
   document.getElementById('ultimoAgg').textContent=now.toLocaleDateString('it-IT')+' '+now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   document.getElementById('dataOggi').textContent=now.toLocaleDateString('it-IT',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
