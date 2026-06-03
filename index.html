@@ -88,6 +88,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .kpi.giallo::before{background:var(--orange);}
 .kpi.viola::before{background:var(--purple);}
 .kpi.teal::before{background:var(--teal);}
+.kpi.arancio::before{background:var(--orange);}
+.kpi.arancio .numero{color:var(--orange);}
 .kpi .numero{font-family:'DM Mono',monospace;font-size:2.2rem;font-weight:500;line-height:1;margin-bottom:7px;}
 .kpi.blu .numero{color:var(--blue);}
 .kpi.verde .numero{color:var(--green);}
@@ -274,6 +276,7 @@ tr.row-silente:hover td{background:#ede9fe;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:1200px){.kpi-row{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:1400px) and (min-width:1201px){.kpi-row{grid-template-columns:repeat(7,1fr);}}
 @media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:768px){
   header{padding:10px 14px;}
@@ -368,73 +371,20 @@ tr.row-silente:hover td{background:#ede9fe;}
       <div class="numero" id="kpiFatturato">—</div>
       <div class="etichetta">Fatturato atteso (k€)</div>
     </div>
-    
+    <div class="kpi arancio" onclick="kpiClick('verbali')"   title="Vai ai verbali in attesa">
+      <div class="numero" id="kpiVerbali">—</div>
+      <div class="etichetta">Verbali in attesa</div>
+    </div>
   </div>
 
   <!-- ══ TAB NAV ════════════════════════════════════════════════ -->
   <div class="tabs">
-    <button class="tab active" data-tab="impegni"    onclick="switchTab('impegni',this)">Impegni</button>
-    <button class="tab"        data-tab="settimana"  onclick="switchTab('settimana',this)">Questa settimana</button>
+    <button class="tab active" data-tab="impegni"     onclick="switchTab('impegni',this)">Impegni</button>
+    <button class="tab"        data-tab="settimana"   onclick="switchTab('settimana',this)">Questa settimana</button>
     <button class="tab"        data-tab="campionature" onclick="switchTab('campionature',this)">Campionature</button>
     <button class="tab"        data-tab="performance" onclick="switchTab('performance',this)">Performance</button>
     <button class="tab"        data-tab="audit-trail" onclick="switchTab('audit-trail',this)">Audit Trail</button>
-  </div>
-
-  <!-- ══ TAB IMPEGNI ════════════════════════════════════════════ -->
-  <div class="tab-content active" id="tab-impegni">
-    <div class="grid-2">
-      <div class="card" style="margin-bottom:0">
-        <div class="card-header"><div class="card-title">Stato impegni</div></div>
-        <div class="chart-container"><canvas id="chartStato"></canvas></div>
-      </div>
-      <div class="card" style="margin-bottom:0">
-        <div class="card-header"><div class="card-title">Scadenze per mese</div></div>
-        <div class="chart-container"><canvas id="chartScadenze"></canvas></div>
-      </div>
-    </div>
-    <div style="height:16px"></div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">Andamento — aperti vs completati</div></div>
-      <div class="chart-container" style="height:200px"><canvas id="chartBurndown"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Tutti gli impegni</div>
-        <div class="card-actions">
-          <div class="card-count" id="countImpegni">—</div>
-          <button class="btn-export" onclick="esportaCSV('impegni')">&#8595; CSV</button>
-        </div>
-      </div>
-      <div class="filtri-row" style="margin-bottom:14px">
-        <input type="text" id="cercaImpegni" placeholder="Cerca descrizione..." oninput="renderImpegni()">
-        <select id="filtroStatoImp" onchange="renderImpegni()">
-          <option value="">Tutti gli stati</option>
-          <option value="aperti_in_corso">Aperti + In corso</option>
-          <option>Aperto</option><option>In corso</option><option>Completato</option>
-          <option>In ritardo</option><option>Riprogrammato</option><option>Stand by</option>
-        </select>
-        <select id="filtroRespImp" onchange="renderImpegni()"><option value="">Tutti i responsabili</option></select>
-        <select id="filtroPeriodoImp" onchange="renderImpegni()">
-          <option value="">Qualsiasi scadenza</option>
-          <option value="scaduti">Gia scaduti</option>
-          <option value="7">Prossimi 7 giorni</option>
-          <option value="30">Prossimi 30 giorni</option>
-          <option value="90">Prossimi 90 giorni</option>
-        </select>
-        <select id="filtroSilenteImp" onchange="renderImpegni()">
-          <option value="">Qualsiasi attivita</option>
-          <option value="7">Silenti da 7+ giorni</option>
-          <option value="14">Silenti da 14+ giorni</option>
-          <option value="30">Silenti da 30+ giorni</option>
-        </select>
-        <button id="btnToggleCompletati" class="btn-toggle-completati" onclick="toggleCompletati()">
-          <span class="toggle-dot" id="toggleDot"></span>
-          Mostra completati
-        </button>
-        <button class="btn-reset" onclick="resetFiltriImpegni()">&#10005; Reset</button>
-      </div>
-      <div class="table-wrap"><div id="tabellaImpegni"><div class="empty">Caricamento...</div></div></div>
-    </div>
+    <button class="tab"        data-tab="verbali"     onclick="switchTab('verbali',this)">Verbali</button>
   </div>
 
   <!-- ══ TAB QUESTA SETTIMANA ══════════════════════════════════ -->
@@ -523,8 +473,7 @@ tr.row-silente:hover td{background:#ede9fe;}
       </div>
     </div>
   </div>
-
-  
+ 
 
   
   <!-- ══ TAB PERFORMANCE ════════════════════════════════════════ -->
@@ -572,6 +521,28 @@ tr.row-silente:hover td{background:#ede9fe;}
     <div class="table-wrap"><div id="tabellaAuditTrail"><div class="empty">Caricamento...</div></div></div>
   </div>
 </div>
+
+<!-- ══ TAB VERBALI ════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-verbali">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Verbali bozza</div>
+        <div class="card-actions">
+          <div class="card-count" id="countVerbali">—</div>
+        </div>
+      </div>
+      <div class="filtri-row" style="margin-bottom:14px">
+        <select id="filtroStatoVerbali" onchange="renderVerbali()">
+          <option value="">Tutti gli stati</option>
+          <option value="bozza">In attesa</option>
+          <option value="confermata">Confermata</option>
+          <option value="annullata">Annullata</option>
+        </select>
+        <button class="btn-reset" onclick="resetFiltriVerbali()">&#10005; Reset</button>
+      </div>
+      <div class="table-wrap"><div id="tabellaVerbali"><div class="empty">Caricamento...</div></div></div>
+    </div>
+  </div>
 
 </div><!-- /container -->
 
@@ -668,7 +639,7 @@ function doLogin(){
 // ══ STATO GLOBALE ═════════════════════════════════════════════
 var C={blue:'#2563eb',blueA:'rgba(37,99,235,0.7)',green:'#16a34a',greenA:'rgba(22,163,74,0.7)',red:'#dc2626',redA:'rgba(220,38,38,0.7)',orange:'#d97706',orangeA:'rgba(217,119,6,0.7)',purple:'#7c3aed',muted:'#636882',grid:'#e5e7ef',label:'#636882'};
 var charts={};
-var _impegni=[],_campionature=[],_tooltips=[],_auditTrail=[];
+var _impegni=[],_campionature=[],_tooltips=[],_auditTrail=[],_verbali=[];
 var sortImp={col:'scadenza',dir:1},sortCamp={col:null,dir:1};
 var mostraCompletati=false; // default: completati nascosti
 
@@ -757,6 +728,10 @@ function kpiClick(tipo){
     renderImpegni();
   } else if(tipo==='camp'||tipo==='fatturato'){
     attivaTab('campionature');
+  } else if(tipo==='verbali'){
+    attivaTab('verbali');
+    document.getElementById('filtroStatoVerbali').value='bozza';
+    renderVerbali();
   }
 }
 
@@ -1123,14 +1098,69 @@ function resetFiltriAuditTrail(){
   renderAuditTrail();
 }
 
+// ══ RENDER VERBALI ════════════════════════════════════════════
+function renderVerbali(){
+  var filtroStato=document.getElementById('filtroStatoVerbali').value;
+  var lista=_verbali.filter(function(v){
+    return !filtroStato||v.stato===filtroStato;
+  });
+  lista.sort(function(a,b){return new Date(b.ts_creazione)-new Date(a.ts_creazione);});
+  document.getElementById('countVerbali').textContent=lista.length+' / '+_verbali.length;
+  if(lista.length===0){
+    document.getElementById('tabellaVerbali').innerHTML='<div class="empty">Nessun verbale</div>';
+    return;
+  }
+  var statoBadge=function(s){
+    if(s==='bozza')    return'<span class="badge in-corso">In attesa</span>';
+    if(s==='confermata')return'<span class="badge completato">Confermata</span>';
+    if(s==='annullata') return'<span class="badge in-ritardo">Annullata</span>';
+    return'<span class="badge">'+escHtml(s)+'</span>';
+  };
+  var html='<table><thead><tr>'+
+    '<th>Codice</th><th>Creazione</th><th>Oggetto email</th>'+
+    '<th>Attivita</th><th>Stato</th><th>Confermato da</th><th>Data conferma</th>'+
+    '</tr></thead><tbody>';
+  lista.forEach(function(v){
+    var attivita=[];
+    try{attivita=JSON.parse(v.attivita_json||'[]');}catch(e){}
+    var nAtt=attivita.length;
+    var ts=v.ts_creazione?new Date(v.ts_creazione).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    var tsConf=v.ts_conferma?new Date(v.ts_conferma).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+    html+='<tr>'+
+      '<td><span class="codice">'+escHtml(v.codice||'—')+'</span></td>'+
+      '<td style="font-size:0.78rem;white-space:nowrap">'+ts+'</td>'+
+      '<td style="font-size:0.82rem;max-width:260px">'+escHtml(v.oggetto_email||'—')+'</td>'+
+      '<td style="font-family:\'DM Mono\',monospace;font-size:0.82rem;text-align:center">'+nAtt+'</td>'+
+      '<td>'+statoBadge(v.stato)+'</td>'+
+      '<td style="font-size:0.78rem">'+escHtml(v.confermato_da||'—')+'</td>'+
+      '<td style="font-size:0.78rem;white-space:nowrap">'+tsConf+'</td>'+
+      '</tr>';
+  });
+  html+='</tbody></table>';
+  document.getElementById('tabellaVerbali').innerHTML=html;
+}
+
+function resetFiltriVerbali(){
+  document.getElementById('filtroStatoVerbali').value='';
+  renderVerbali();
+}
 
   
 // ══ CARICAMENTO ══════════════════════════════════════════════
 async function carica(){
   if(sessionStorage.getItem('shaq_auth')!=='ok') return;
 
-  var risultati=await Promise.all([fetchTabella('impegni'),fetchTabella('campionature'),fetchTabella('audit_log')]);
-  _impegni=risultati[0];_campionature=risultati[1];_auditTrail=risultati[2]||[];_tooltips=[];
+  var risultati=await Promise.all([
+    fetchTabella('impegni'),
+    fetchTabella('campionature'),
+    fetchTabella('audit_log'),
+    fetchTabella('verbali_bozza')
+  ]);
+  _impegni=risultati[0];
+  _campionature=risultati[1];
+  _auditTrail=risultati[2]||[];
+  _verbali=risultati[3]||[];
+  _tooltips=[];
 
   document.getElementById('kpiTotale').textContent=_impegni.length;
   document.getElementById('kpiAperti').textContent=_impegni.filter(function(i){return i.stato==='Aperto'||i.stato==='In corso';}).length;
@@ -1139,6 +1169,7 @@ async function carica(){
   document.getElementById('kpiCamp').textContent=_campionature.filter(function(c){return c.stato!=='Completata';}).length;
   var totFatt=_campionature.reduce(function(a,c){return a+(parseFloat(c.fatturato_atteso)||0);},0);
   document.getElementById('kpiFatturato').textContent=totFatt>=1000?(totFatt/1000).toFixed(0)+'k':totFatt.toFixed(0);
+  document.getElementById('kpiVerbali').textContent=_verbali.filter(function(v){return v.stato==='bozza';}).length;
 
   var responsabili=[];_impegni.forEach(function(i){if(i.responsabile&&responsabili.indexOf(i.responsabile)===-1)responsabili.push(i.responsabile);});
   popolaSelect('filtroRespImp',responsabili);
@@ -1156,7 +1187,7 @@ async function carica(){
   var maxTipo=Math.max.apply(null,Object.values(cntTipo).concat([1]));
   document.getElementById('tipoBars').innerHTML=tipiDef.map(function(t){var n=cntTipo[t.key]||0;var pct=Math.round(n/maxTipo*100);return'<div class="tipo-bar-row"><div class="tipo-bar-header"><span class="tipo-bar-label">'+t.label+'</span><span class="tipo-bar-nums">'+n+'</span></div><div class="tipo-bar-track"><div class="tipo-bar-fill" style="width:'+pct+'%;background:'+t.color+'"></div></div></div>';}).join('')||'<div class="empty">Nessun dato</div>';
 
-  renderImpegni();renderSettimana();renderCampionature();renderAuditTrail();disegnaGrafici();
+  renderImpegni();renderSettimana();renderCampionature();renderAuditTrail();renderVerbali();disegnaGrafici();
 
   var now=new Date();
   document.getElementById('ultimoAgg').textContent=now.toLocaleDateString('it-IT')+' '+now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
