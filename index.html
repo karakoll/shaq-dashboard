@@ -386,6 +386,65 @@ tr.row-silente:hover td{background:#ede9fe;}
     <button class="tab"        data-tab="verbali"     onclick="switchTab('verbali',this)">Verbali</button>
   </div>
 
+<!-- ══ TAB IMPEGNI ════════════════════════════════════════════ -->
+  <div class="tab-content active" id="tab-impegni">
+    <div class="grid-2">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header"><div class="card-title">Stato impegni</div></div>
+        <div class="chart-container"><canvas id="chartStato"></canvas></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header"><div class="card-title">Scadenze per mese</div></div>
+        <div class="chart-container"><canvas id="chartScadenze"></canvas></div>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Andamento — aperti vs completati</div></div>
+      <div class="chart-container" style="height:200px"><canvas id="chartBurndown"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Tutti gli impegni</div>
+        <div class="card-actions">
+          <div class="card-count" id="countImpegni">—</div>
+          <button class="btn-export" onclick="esportaCSV('impegni')">&#8595; CSV</button>
+        </div>
+      </div>
+      <div class="filtri-row" style="margin-bottom:14px">
+        <input type="text" id="cercaImpegni" placeholder="Cerca descrizione..." oninput="renderImpegni()">
+        <select id="filtroStatoImp" onchange="renderImpegni()">
+          <option value="">Tutti gli stati</option>
+          <option value="aperti_in_corso">Aperti + In corso</option>
+          <option>Aperto</option><option>In corso</option><option>Completato</option>
+          <option>In ritardo</option><option>Riprogrammato</option><option>Stand by</option>
+        </select>
+        <select id="filtroRespImp" onchange="renderImpegni()"><option value="">Tutti i responsabili</option></select>
+        <select id="filtroPeriodoImp" onchange="renderImpegni()">
+          <option value="">Qualsiasi scadenza</option>
+          <option value="scaduti">Gia scaduti</option>
+          <option value="7">Prossimi 7 giorni</option>
+          <option value="30">Prossimi 30 giorni</option>
+          <option value="90">Prossimi 90 giorni</option>
+        </select>
+        <select id="filtroSilenteImp" onchange="renderImpegni()">
+          <option value="">Qualsiasi attivita</option>
+          <option value="7">Silenti da 7+ giorni</option>
+          <option value="14">Silenti da 14+ giorni</option>
+          <option value="30">Silenti da 30+ giorni</option>
+        </select>
+        <button id="btnToggleCompletati" class="btn-toggle-completati" onclick="toggleCompletati()">
+          <span class="toggle-dot" id="toggleDot"></span>
+          Mostra completati
+        </button>
+        <button class="btn-reset" onclick="resetFiltriImpegni()">&#10005; Reset</button>
+      </div>
+      <div class="table-wrap"><div id="tabellaImpegni"><div class="empty">Caricamento...</div></div></div>
+    </div>
+  </div>
+
+
+  
   <!-- ══ TAB QUESTA SETTIMANA ══════════════════════════════════ -->
   <div class="tab-content" id="tab-settimana">
     <div class="card">
@@ -543,6 +602,8 @@ tr.row-silente:hover td{background:#ede9fe;}
     </div>
   </div>
 
+<div class="ultimo-agg">Ultimo aggiornamento: <span id="ultimoAgg">—</span></div>
+  
 </div><!-- /container -->
 
 <!-- ══ MODAL IMPEGNI ══════════════════════════════════════════ -->
