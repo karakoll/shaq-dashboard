@@ -71,7 +71,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 
 /* ── KPI ── */
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:24px;}
+.kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:24px;}
 .kpi{
   background:var(--surface);border:1px solid var(--border);border-radius:10px;
   padding:18px 16px 16px;position:relative;overflow:hidden;
@@ -276,7 +276,6 @@ tr.row-silente:hover td{background:#ede9fe;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:1200px){.kpi-row{grid-template-columns:repeat(4,1fr);}}
-@media(max-width:1400px) and (min-width:1201px){.kpi-row{grid-template-columns:repeat(7,1fr);}}
 @media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:768px){
   header{padding:10px 14px;}
