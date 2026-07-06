@@ -1511,7 +1511,7 @@ function switchView(v){
 
 // ── MBO: LOAD ─────────────────────────────────────────────────
 async function loadMBO(){
-  if(currentRole!=='admin')return;
+  if(!canViewMbo())return;
   const[pe,ca,ob,su]=await Promise.all([
     sb.from('mbo_people').select('*').order('sort_order'),
     sb.from('mbo_cards').select('*').order('year'),
